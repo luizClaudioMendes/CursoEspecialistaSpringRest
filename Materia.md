@@ -179,3 +179,42 @@ ex. a injeçao de dependencias, no JEE agente tem o CDI, no spring framework.
 
 para desenvolver rest API no JEE agente pode usar o JAX-RS e no spring agente usa o spring MVC.
 
+### 2.4. Conhecendo o Spring Boot
+antigamente, os projetos spring era configurados usando arquivos XML. e isso era muito ruim pois eram necessarios varios arquivos e um erro de escrita passava desapercebido e so identificado na hora que estiver rodando a aplicacao.
+por isso, a partir da versao 3 do spring foi possivel usar a configuracao programatica, evitando assim os erros de digitacao.
+mas mesmo assim, eram necessarios varios arquivos e com essa configuracao excessiva, os desenvolvedores perdem o foco no desenvovimento das regras de negocio.
+
+com todo esse problema surgiu o spring boot, que veio para simplificar a configuracao do projeto.
+
+o spring boot utiliza conceito de convention over configuration, usando uma visao opnativa para a configuracao do projeto.
+uma visao opnativa quer dizer que ele utiliza as configuracoes que ele identifica como sendo as melhores.
+
+claro que é possivel customizar essas configuracoes, mas o spring usa as configuracoes mais usadas no mercado.
+
+o spring boot nao gera codigo, ele apenas auto configura os projetos.
+
+ao trabalhar com maven, pe necessario adicionar varias dependencias no POM.
+com isso, o POM pode ficar bastante longo e complexo, levando a erros de incompatibilidade entre versoes.
+
+o spring boot facilita isso tambem, pois ele fornece os starters, que sao dependencias que agrupam outras dependencias.
+
+se voce trabalhar com JPa por exemplo, se voce adicionar o starter, ele ja traz todas as dependencias necessarias e compativeis, nao havendo conflito entre elas.
+
+o spring boot facilita a implementaçao.
+
+o spring boot é uma forma de acelerar a configuracao do projeto. spring boot nao substitui outros projetos, como o spring MVC. eles sao complementares.
+
+o spring boot nao é um framework para desenvolvimento web, ele é apenas uma camada de abstracao em cima do spring, simplificando o desenvolvimento de aplicacoes.
+
+somente o spring boot sem o spring mvc voce nao consegue desenvolver para web.
+
+
+
+
+
+
+
+
+
+
+
