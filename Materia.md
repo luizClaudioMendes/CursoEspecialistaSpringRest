@@ -136,3 +136,46 @@ www.spring.io
 o ecossitema spring tem varios projetos e subprojetos.
 como ele é modular, é possivel utilizar somente um ou varios modulos.
 
+### 2.3. Spring vs Jakarta EE (Java EE)
+a oracle decidiu transferir o Java EE para a eclipse foundation, na transferencia foi necessario trocar o nome de JavaEE para JAkarta EE, pois Java é uma marca registrada da oracle.
+
+o JEE é baseado em especificaçoes. a ideia de especificacoes é padronizar a tecnologia. 
+
+um exemplo é o JPA, que é uma especificacao que esta dentro do JEE, como uma subespecificacao.
+
+o JPA foi a especificacao do Hibernate, que é mais antigo e agora o hibernate implementa a especificacao JPA. 
+
+a consequencia é que agora podemos escolher outras implementaçoes de JPA concorrentes do Hibernate, pois elas tambem implementam o JPA.
+
+com essas especificacoes, ganhamos o poder de escolha de soluçoes, pois varias delas implementam a especificacao JEE.
+
+existem varias outras especificacoes dentro do JEE.
+
+#### pontos fortes do JEE
+-> portabilidade,
+-> padronizacao 
+-> estabilidade
+
+#### spring
+o spring tem um ecossistema muito grande, e traz muitas inovaçoes.
+o core do spring é mais estavel porque é a parte mais antiga do sistema. mas os outros projetos spring que evoluem muito rapido e por isso nao é muito incomum quebra o codigo entre versoes, sendo necessario fazer algum ajuste quando se troca de versoes.
+o spring tem muitas inoveçoes, sendo preferivel a inovacao à estabilidade.
+
+qual escolher, spring ou JEE?
+qualquer um dos dois sao boas opçoes. em alguns momentos o spring e JEE concorrem mas em outros momentos eles se complementam.
+
+o spring implementa o JEE, e o uso de um nao impede a utilizacao do outro.
+
+por exemplo se voce usar spring MVC, voce esta usando a implementacao de servlets do JEE.
+
+se voce usar Spring data JPA, voce esta usando tambem JPA, que é uma especificacao JEE.
+
+mas nada impede de voce usar JPA direto no sistema spring, sem a implementacao spring data.
+
+se voce usar um projeto JEE mas usar componentes do spring, sem problemas.
+
+existem alguns projetos spring que concorrem diretamente com o JEE. nesse caso somente um pode ser usado.
+ex. a injeçao de dependencias, no JEE agente tem o CDI, no spring framework.
+
+para desenvolver rest API no JEE agente pode usar o JAX-RS e no spring agente usa o spring MVC.
+
