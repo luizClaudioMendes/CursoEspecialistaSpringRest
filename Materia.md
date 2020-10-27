@@ -109,4 +109,24 @@ OpenJDK 11 da Oracle (sem suporte e sem updates de segurança) -- https://jdk.ja
 JDK 11 da Oracle (não pode ter uso comercial sem uma licença) -- https://www.oracle.com/java/technologies/javase-jdk11-downloads.html
 Spring Tool Suite
 
-### 
+### 2.1. Por que aprender e usar Spring?
+
+#### o que é spring?
+spring é uma tecnologia de backend, nao é um framework apenas mas um conjunto de projetos que resolvem varios problemas de um programador backend. ele ajuda a criar aplicacoes java com simpicidade e facilidade.
+
+como existem muitos projetos spring, é comum se referenciar a eles como ecosistema spring.
+
+o spring deve ajudar nos a focar nas regras de negocio ao inves de perder tempo desenvolvendo itens de arquitetura comuns.
+
+#### porque usar spring?
+- canivete suiço para desenvolvedores java (ele resolve varios problemas no desenvolvimento de software)
+- simplicidade (reduzir a complexidade)
+- maturidade (tecnologia bem madura usada por varias empresas)
+- modularidade (spring nao é um projetao gigante, ele é organizado por projetos e subprojetos e agente pode escolher quais desses projetos agente quer usar)
+- evolucao constante (o spring esta sempre sendo evoluido)
+- open source
+- comunidade grande e forte
+- popularidade
+- empregabilidade
+
+
