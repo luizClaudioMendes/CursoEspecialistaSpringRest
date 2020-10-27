@@ -129,4 +129,10 @@ o spring deve ajudar nos a focar nas regras de negocio ao inves de perder tempo 
 - popularidade
 - empregabilidade
 
+### 2.2. Conhecendo o ecossistema Spring
+o site do spring é o 
+www.spring.io
+
+o ecossitema spring tem varios projetos e subprojetos.
+como ele é modular, é possivel utilizar somente um ou varios modulos.
 
