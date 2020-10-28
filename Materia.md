@@ -253,13 +253,107 @@ pronto. o projeto esta pronto.
 
 caso tenha feito pelo browser no site do spring intializr, basta somente importar o projeto na IDE.
 
+### 2.6. Conhecendo o Maven e o pom.xml de um projeto Spring Boot
+
+maven é uma ferramenta de gerenciamento de dependencias e automaçao de builds de projetos java.
+
+a estrutura de pastas do projeto é a seguinte:
+
+=> src/test/java
+
+local onde colocar as classes de teste
+
+=> src/main/java
+
+onde colocamos o codigo fonte do projeto
+
+=> src/main/resources
+
+onde colocamos arquivos de configuracao, imagens, etc
+
+esta estrutura é padronizada pelo maven. sempre que voce utilizar o maven, ele tera esta estrutura.
+
+na raiz do projeto foi criado o arquivo POM.xml (Projet Object Model).
+
+os arquivos mvnw sao arquivos maven wrapper que servem para executar o maven no terminal mesmo sem ter o maven instalado.
+
+so que o eclipse/sts ja tem um maven embutido.
+
+#### builds do projeto
+no projeto, o maven ajuda a fazer o build do projeto.
+
+para gerar um build para execucao externa do projeto basta clicar com o direito no projeto > run as > maven build
+
+em goals, colocar 'package' e clicar em run
+
+quando ele terminar, ele cria a pasta target.
+
+dentro da pasta tem um jar com o projeto empacotado.
+
+para empacotar pela linja de comando basta colocar o comando:
+
+mvn package que ele executara o mesmo processo descrito acima
+
+#### para iniciar o projeto depois do empacotamento:
+
+na linha de comando:
+
+java -jar NOME_DO_ARQUIVO_JAR
+
+pronto. o projeto inicializara.
+
+#### maven clean
+o clean limpa os arquivos criados por builds anteriores, ou seja, ele apaga a pasta target no projeto.
+
+#### POM.XML
+o coracao do maven no projeto é o pom.xml
+
+<parent>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-parent</artifactId>
+	<version>2.1.7.RELEASE</version>
+	<relativePath/> <!-- lookup parent from repository -->
+</parent>
+
+isto diz que agente esta herdando configuracoes de um outro local.
+
+groupId - categoriza os projetos
+
+artifactId - identificador do projeto
+
+entao o que falamos é que, estou usando spring boot e quero que ele seja baseado nas configuracoes herdadas da versao 2.1.7 do spring boot.
+
+agora as configuracoes do nosso projeto:
+
+<groupId>com.algaworks.testes</groupId>
+<artifactId>algafood-api-testes</artifactId>
+<version>0.0.1-SNAPSHOT</version>
+<name>algafood-api-testes</name>
+<description>projetos para testes do capitulo 2
+</description>
+
+estas informaçoes foram as apresentadas no momentod e criacao do projeto.
 
 
+<properties>
+	<java.version>11</java.version>
+</properties>
 
+as propriedades sao propriedades do projeto, onde podemos criar qualquer propriedade para usar no projeto.
 
+as propriedades do parent sao sobrescritas por estas, entao cuidado para nao criar propriedades cujo nome sejam identicas as existentes no projeto pai.
 
+#### ver dependencias na linha de comando
+embora na IDE seja possivel ver a arvore de dependencias ou a lista de dependencias no arquivo pom.xml, tanto no proprio arquivo quanto nas abas que a IDE fornece, tambem é possivel ve-las na linha de comando.
 
+basta digitar:
+mvn dependency:tree
+ou
+mvn dependency:resolve
 
+OBS: o comando pode ser mvn se usar o maven instalado no computador ou se quiser usar o maven do projeto, utilizar mvnw em vez de mvn.
 
+#### repositorio local do maven
+quando agente baixa as dependencias, o maven armazena-as em uma pasta local, chamada repositorio local.
 
 
