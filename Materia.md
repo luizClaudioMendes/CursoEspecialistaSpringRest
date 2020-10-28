@@ -400,3 +400,34 @@ public class MeuPrimeiroController {
 
 }
 
+### 2.8. Restart mais rápido da aplicação com DevTools
+existe uma ajuda muito legal no spring para nos desenvolvedores.
+
+cada vez que alteramos uma classe, do jeito que esta hoje o projeto, é necessario fazer um restar da aplicacao, o que leva muito tempo.
+
+entao no spring existe o DevTools.
+
+para ativar o DevTools basta
+
+clicar com o botao direito no projeto
+> spring > add DevTools
+
+isso ira inserir no pom uma outra dependencia:
+
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-devtools</artifactId>
+</dependency>
+
+pronto. agora sempre que voce salvar uma classe ela sera carregada automaticamente.
+
+o devtools fica monitorando as classes do projeto. quando ha uma alteração o devtools somente recarrega a classe alterada.
+o classloader é que é responsavel por esse comportamento.
+tudo o que nao muda nao é recarregado de novo.
+
+o devtools somente atua em desenvolvimento.
+
+
+
+
+
