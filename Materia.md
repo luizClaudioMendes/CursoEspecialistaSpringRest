@@ -208,6 +208,51 @@ o spring boot nao é um framework para desenvolvimento web, ele é apenas uma ca
 
 somente o spring boot sem o spring mvc voce nao consegue desenvolver para web.
 
+### 2.5. Criando um projeto Spring Boot com Spring Initializr
+
+
+para criar um projeto springboot é muito facil.
+
+no STS, selecione new project.
+procure por spring starter project
+
+vai abrir uma tela de configuracao.
+
+service URL - nao se altera, esta url é a url de servico do spring para a criacao de projetos. se nao tiver o STS voce pode acessar diretamente esta pagina para criar um projeto e importar no eclipse.
+
+location - local onde sera criado o projeto
+
+type - maven / gradle
+
+packaging - jar / war
+
+java version
+
+language -  java
+
+group - dominio da empresa ao contrario ex: com.algaworks
+
+artifact - algafood-api
+
+version
+
+description 
+
+package - o pacote inicial java ex: com.algaworks.algafood
+
+
+clique em next e aparecera uma nova tela com as dependencias
+
+spring boot version - 
+
+adicionar a dependencia -> spring web starter
+
+clicar em finish
+
+pronto. o projeto esta pronto.
+
+caso tenha feito pelo browser no site do spring intializr, basta somente importar o projeto na IDE.
+
 
 
 
