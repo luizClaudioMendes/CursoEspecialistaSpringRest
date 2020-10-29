@@ -695,4 +695,39 @@ beans ou dependencies como tambem sao conhecidos, sao objetos gerenciados pelo c
 
 o container de ioc do spring é representado pela interface ApplicationContext.
 
+### 2.11. Definindo beans com @Component
+como definir um bean para que este fique disponivel para ser injetado.
+
+como defino que uma classe é um bean spring, um componente spring?
+
+para fazer isso agente usa a anotacao @Component
+
+com essa anotaçao estou informando ao spring que essa classe é um componente spring. gerencia ele.
+
+ao iniciar a aplicacao, o spring scaneia as classes e as que possuem essa anotacao sao criadas.
+entao ela ja é criada e colocada no container.
+
+as classes que utilizam a anotacao @Controller tambem sao gerenciadas e criadas ao inicializar.
+dentro do codigo da @Controller podemos ver que ela tambem utiliza as anotacoes @Component.
+
+o @Controller tem a semantica de alem de ser um componente spring ela tambem responde por requisicoes web.
+
+como que o spring descobre os beans?
+
+na incializacao da aplicacao ele vai escanear a aplicacao procurando pelas anotaçoes do spring, classes estas que serao gerenciadas pelo container.
+
+porque ele executa o component scan?
+
+quando criamos o projeto com o spring boot, ele cria uma classe com o nome do projeto (XXXXapplication.java).
+
+nela existe um metodo main que inicia a aplicacao spring, mas essa classe tem uma anotacao importante.
+
+@SpringBootApplication
+
+essa anotacao tem dentro dela, uma outra anotacao importante:
+
+@ComponentScan
+
+aqui é onde esta configurando que todas as classes que pertencem ao pacote onde esta classe se encontra ou a sub-pacotes, devem ser escaneadas.
+
 
