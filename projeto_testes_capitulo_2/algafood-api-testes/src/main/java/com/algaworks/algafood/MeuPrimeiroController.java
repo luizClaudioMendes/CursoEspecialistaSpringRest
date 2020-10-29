@@ -4,6 +4,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.algaworks.algafood.modelo.Cliente;
+import com.algaworks.algafood.service.AtivacaoClienteService;
+
 /*
  * esta classe servira como exemplo de como criar uma
  * endpoint simples.
@@ -32,9 +35,24 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class MeuPrimeiroController {
 	
+	private AtivacaoClienteService ativacaoClienteService;
+	
+	/*
+	 * usando este contrutor para evidenciar a injecao de dependencias pelo
+	 * construtor
+	 */
+	public MeuPrimeiroController(AtivacaoClienteService ativacaoClienteService) {
+		this.ativacaoClienteService = ativacaoClienteService;
+	}
+
+
+
 	@GetMapping("/hello")
 	@ResponseBody
 	public String hello() {
+		Cliente cliente = new Cliente("joao", "teste@teste.com", "1122223333");
+		
+		ativacaoClienteService.ativar(cliente);
 		return "Hello!";
 	}
 

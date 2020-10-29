@@ -730,4 +730,73 @@ essa anotacao tem dentro dela, uma outra anotacao importante:
 
 aqui é onde esta configurando que todas as classes que pertencem ao pacote onde esta classe se encontra ou a sub-pacotes, devem ser escaneadas.
 
+### 2.12. Injetando dependências (beans Spring)
+
+uma forma de injetar dependencias no spring é usando o construtor com parametros.
+
+vamos usar o AtivacaoClienteService como exemplo.
+
+nele temos a prorpriedade NotificadorEmail.
+
+private NotificadorEmail notificador;
+	
+public void ativar(Cliente cliente) {
+	cliente.ativar();
+
+	notificador.notificar(cliente, "Seu cadastro no sistema está ativo!");
+}
+
+porem, ela estara sempre nula nesse momento.
+
+o NotificadorEmail é um bean spring. como os dois sao beans springs agente pode injetar uma na outra.
+
+basta agente criar o construtor com parametros na classe AtivacaoClientes Service.
+
+
+@Component
+public class AtivacaoClienteService {
+
+	private NotificadorEmail notificador;
+	
+	public AtivacaoClienteService(NotificadorEmail notificador) {
+		this.notificador = notificador;
+	}
+
+	public void ativar(Cliente cliente) {
+		cliente.ativar();
+
+		notificador.notificar(cliente, "Seu cadastro no sistema está ativo!");
+	}
+}
+
+na inicializacao do spring, ele instacializa todos os beans gerenciados na sequencia que eles sao necessarios.
+
+uma das formas de fazer a injeçao de dependencia é usando o construtor com o parametro necessario.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
