@@ -773,6 +773,197 @@ na inicializacao do spring, ele instacializa todos os beans gerenciados na seque
 
 uma das formas de fazer a injeçao de dependencia é usando o construtor com o parametro necessario.
 
+### 2.13. Usando @Configuration e @Bean para definir beans
+
+agora vamos ver outra forma de configurar beans no spring.
+
+mas para isso vamos criar um problema:
+
+na classe NotificadorEmail, vamos adicionar uma configuracao a mais.
+
+criamos uma prorpriedade boolean caixaAlta, que significa que quando ele estiver true, a mensagem deverá ser escrita em caixa alta.
+
+e criamos outra, hostServidorSMTP, que sera recebida no construtor.
+
+entao ela estava assim:
+@Component
+public class NotificadorEmail implements Notificador {
+	
+	@Override
+	public void notificar(Cliente cliente, String mensagem) {
+		System.out.printf("Notificando %s através do e-mail %s: %s\n", 
+				cliente.getNome(), cliente.getEmail(), mensagem);
+	}
+}
+
+e agora vai ficar assim:
+@Component
+public class NotificadorEmail implements Notificador {
+	
+	private boolean caixaAlta;
+	private String hostServidorSMTP;
+	
+	public NotificadorEmail(String hostServidorSMTP) {
+		this.hostServidorSMTP = hostServidorSMTP;
+	}
+
+	@Override
+	public void notificar(Cliente cliente, String mensagem) {
+		if(caixaAlta) {
+			mensagem = mensagem.toUpperCase();
+		}
+		System.out.printf("Notificando %s através do e-mail %s usando o servidor SMTP %s: %s\n", 
+				cliente.getNome(), cliente.getEmail(), this.hostServidorSMTP, mensagem);
+	}
+	
+	public void setCaixaAlta(boolean caixaAlta) {
+		this.caixaAlta = caixaAlta;
+	}
+}
+
+bom agora temo o problema.
+a classe string nao é uma classe gerenciada do spring. entao no momento de instanciar esta classe ele nao sabe o que colocar no construtor para conseguir cria-la.
+
+public NotificadorEmail(String hostServidorSMTP) {
+	this.hostServidorSMTP = hostServidorSMTP;
+}
+
+mesmo que ele soubesse o que colocar no parametro string, ele nao configuraria o atributo caixaAlta.
+
+ou seja, ele nao sabe configurar a classe para que ela seja instanciada corretamente.
+
+existem alguns momentos em que agente quer customizar a criacao de um bean para que ele fique disponivel no spring.
+
+como fazer isso?
+
+primeiro, agente retira da classe a anotacao @Component.
+
+ao fazer isso o spring nao vai mais tentar instanciar esta classe e dara erro pois esta classe é dependencia injetada de outra.
+
+agora precisamos informar ao spring como que ele instancia esta classe.
+
+ai devemos criar uma nova classe de configuracao do projeto. vamos chama-la neste momento de AlgaConfig.java
+
+este tipo de classe pode ter qualquer nome. por convencao colocamos config no nome para poder facilmente identifica-las.
+
+essas classes de configuracao sao anotadas com @Configuration
+
+@configuration é tambem um @Component mas com o objetivo especifico de definicao de beans.
+
+dentro desta classe criamos um metodo publico chamado notificadorEmail, que retona um NotificadorEmail.java
+
+public NotificadorEmail notificadorEmail() {
+	NotificadorEmail notificador = new NotificadorEmail("smtp.teste.config");
+	notificador.setCaixaAlta(true);//configurando a caixa alta
+	
+	return notificador;
+}
+
+ele agora é o responsavel por criar e configurar a classe NotificadorEmail.
+
+mas ainda nao esta pronto.
+
+ele precisa da anotacao @Bean
+
+@Bean
+public NotificadorEmail notificadorEmail() {
+	NotificadorEmail notificador = new NotificadorEmail("smtp.teste.config");
+	notificador.setCaixaAlta(true);//configurando a caixa alta
+	
+	return notificador;
+}
+
+essa anotacao indica ao spring que este metodo é o responsavel por instanciar a classe NotificadorEmail.
+
+dentro do IoC container, por padrao o bean sera nomeado como 'notificadorEmail', que é exatamente o nome do metodo de definicao do bean.
+
+AlgaConfig.java
+@Configuration
+public class AlgaConfig {
+	
+	// este metodo é o responsavel por criar e configurar a classe NotificadorEmail
+	@Bean
+	public NotificadorEmail notificadorEmail() {
+		NotificadorEmail notificador = new NotificadorEmail("smtp.teste.config");
+		notificador.setCaixaAlta(true);//configurando a caixa alta
+		
+		return notificador;
+	}
+}
+
+desta forma o projeto ja vai funcionar corretamente.
+
+Ok. agora vamos para um problema mais complexo.
+
+na classe AtivacaoClienteService, que tem um bean como dependencia, que neste caso é uma implementacao da interface Notificador, tambem esta anotada com @Component.
+
+vamos tirar essa anotacao para que possamos configurar ela na classe AlgaConfig.java
+
+agora no AlgaConfig precisamos fazer um metodo para instancia-la.
+
+@Bean
+public AtivacaoClienteService ativacaoClienteService() {
+	return new AtivacaoClienteService(notificador);
+}
+
+OPA! agora temos um outro problema: o construtor da classe precisa de um objeto notificador, que neste momento agente nao tem.
+
+se agente instanciar lá com new NotificadorEmail, 
+nao estamos criando um objeto gerenciado pelo spring.
+
+o correto é chamar o metodo notificadorEmail da classe config.
+
+@Bean
+public AtivacaoClienteService ativacaoClienteService() {
+	return new AtivacaoClienteService(notificadorEmail());
+}
+
+desta forma funciona!!!!
+
+funcionou legal porque neste exemplo voce so tem uma classe de configuracao mas existem alguns cenarios em que voce tem varias classes de configuracao.
+
+neste momento agente nao vai mais usar a classe AlgaConfig. podemos ate apaga-la.
+
+vamos criar outra classe de config, chamada de notificacaoConfig.java e vamos colocar o metodo de configuracao do bean de NotificacaoEmail.
+
+@Configuration
+public class NotificacaoConfig {
+	
+	@Bean
+	public NotificadorEmail notificadorEmail() {
+		NotificadorEmail notificador = new NotificadorEmail("smtp.teste.config");
+		notificador.setCaixaAlta(true);//configurando a caixa alta
+		
+		return notificador;
+	}
+}
+
+e vamos criar outra classe agora chamada ServiceConfig.java e levar para la o metodo de configuracao da AtivacaoClienteService.java
+
+@Configuration
+public class ServiceConfig {
+
+	@Bean
+	public AtivacaoClienteService ativacaoClienteService() {
+		return new AtivacaoClienteService(notificadorEmail());
+	}
+}
+
+o problema agora é que nao temos mais o metodo notificadorEmail() para pegar o notificador, porque ele esta na outra classe de config.
+
+estamos com esse problema agora:
+como faço quando quero instanciar um bean que depende de outros beans que nao foram definidos na mesma classe de configuracao ou nao foram definidos com o @Component?
+
+basta que, no metodo de configuracao voce receba a classe pretendida.
+
+o spring vai ver que voce precisa daquela classe que foi instanciada seja pelo @Component seja por uma classe de configuracao e ja vai ter ela criada para voce.
+
+@Bean
+public AtivacaoClienteService ativacaoClienteService(Notificador notificador) {
+	return new AtivacaoClienteService(notificador);
+}
+
+pronto. ja temos o sistema funcionando novamente.
 
 
 

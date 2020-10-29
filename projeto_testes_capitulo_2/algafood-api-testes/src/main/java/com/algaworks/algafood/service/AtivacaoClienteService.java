@@ -1,11 +1,9 @@
 package com.algaworks.algafood.service;
 
-import org.springframework.stereotype.Component;
-
 import com.algaworks.algafood.modelo.Cliente;
 import com.algaworks.algafood.notificacao.Notificador;
 
-@Component
+//@Component -- retirado para configuracao nas classes de configuracao de beans
 public class AtivacaoClienteService {
 
 	//usando a interface para diminuir o acoplamento com a implementacao do notificador
