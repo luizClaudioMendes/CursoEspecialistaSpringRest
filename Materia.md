@@ -427,6 +427,259 @@ tudo o que nao muda nao é recarregado de novo.
 
 o devtools somente atua em desenvolvimento.
 
+### 2.9. O que é injeção de dependências?
+
+vamos supor que temos um projeto, que tem as classes cliente e produto.
+
+supomos agora que quando um cliente se cadastrar, ele devera receber um email de confirmacao.
+
+e supomos agora que quando ele comprar um produto ele recebera um SMS.
+
+entao , na classe de servico AtivacaoClienteService, tem um metodo ativar que recebe um cliente.
+
+após alterar o cliente, ela devera notificar o cliente que ele esta ativo, via email.
+
+para dividir a responsabilidade, vamos criar uma classe chamada NotificadorEmail. nela tem um metodo notificar que recebe o cliente e a mensagem.
+
+entao, na classe AtivacaoClienteService, logo apos ativar o cliente agente no metodo ativar, agente coloca:
+
+NotificadorEmail notificador = new NotificadorEmail();
+notificador.notificar(cliente, "seu cadastro esta ativo");
+
+bom, legal. conseguimos separar as responsabilidades.
+
+se criarmos uma classe main, so para testar e dentro do metodo main colocamos:
+
+Cliente joao = new Cliente("joao", "joao@teste.com", "6199999999");
+
+Cliente maria = new Cliente("maria", "maria@teste.com", "6188888888");
+
+agora instanciamos o servico de notificacao de clientes:
+
+AtivacaoClienteService ativacaoCliente = new AtivacaoClienteService();
+
+ativacaoCliente.ativar(joao);
+ativacaoCliente.ativar(maria);
+
+beleza. nada de mais
+
+imagina que agora temos uma nova classe de servico chamada EmissaoNotaFiscalService e que nela tem um metodo que emite uma nota fiscal recebendo um cliente e um produto.
+
+neste mesmo metodo, precisamos avisar ao cliente que a nota fiscal foi emita.
+
+entao como da outra vez, apos emitir a nota fiscal no metodo,
+instanciamos o notificador
+
+NotificadorEmail notificador = new NotificadorEmail();
+notificador.notificar(cliente, "nota fiscal do produto foi emitida");
+
+beleza. exatamente igual a outra.
+
+bom agora temos duas classes de servilo usando a classe de notificacao email.
+
+poderiamos ter centenas de outras classes usando o notificador de email desta forma.
+
+por padrao o nosso sistema notifica por email.
+mas surge uma nova necessidade. todos os clientes precisam ser notificado por SMS.
+
+entao criamos uma nova classe, chamada NotificadorSMS e nela tem um metodo notificar que recebe cliente e a mensagem. tirando a parte de implementar o envio de email e sms que nao interessa ao nosso exemplo aqui, este metodo é identico ao do NotificarEmail.
+
+agora, ja implementamos a notificacao por sms mas o sistema ainda usa a notificacao por email.
+
+poderiamos sair caçando no sistema onde tiver NotificadorEmail notificador = new NotificadorEmail() e substituir por:
+
+NotificadorSMS notificador = new NotificadorSMS()
+
+imagina isso em centenas de classes. sem contar que voce pode ter uma complexidade no construtor.
+
+alem de que voce esta alterando coisas que ja estavam testadas so para fazer uma pequena alteraçao.
+
+se tiver que voltar atras, vai ter que mexer tudo de novo.
+
+nesse cenario entao, da para perceber que temos um acoplamento muito grande no codigo, da implementacao do notificador com as classes de negocio.
+
+tem uma forma de diminir esse acoplamento?
+
+agente pode criar uma interface, com o nome de notificador, nela tem um metodo chamado notificar, que recebe o cliente e a mensagem.
+
+e agora as classes NotificadorEmail e NotificadorSMS implementam a interface Notificador.
+
+e agora como usar?
+
+vamos colocar em pratica o conceito de polimorfismo.
+
+o polimorfismo é a capacidade que o objeto tem de ser visto de varias formas.
+
+ou seja, ao inves de falarmos de notificadorEmail e notificadorSMS vamos falar de notificador.
+
+na classe AtivacaoClienteService, entao, que era um lugar onde se usava new NotificadorEmail, vamos criar uma propriedade chamada notificador, do tipo da interface notificador.
+
+agora no metodo ativar, agente apaga a instanciacao do notificadorEmail que estava la, e começamos a usar a propriedade notificador (que é a interface).
+
+mas se rodarmos agora, o codigo vai dar nullpointer, pois ninguem esta instanciando o notificador.
+
+se criarmos por exemplo um construtor na classe AtivacaoClienteService e nele colocarmos a instanciamento da prorpriedade notificador, nao mudamos nada, somente o local onde é instanciado.
+
+o que agente faz é receber um objeto de tipo notificador (interface) no construtor, e setamos na propriedade esse objeto recebido.
+
+assim nao temos mais o construtor vazio da classe, entao para usar a AtivacaoClienteService, somente se passar o notificador pretendido no construtor.
+
+entao o notificador se transformou em uma dependencia da classe AtivacaoClienteService.
+
+na classe EmissaoNotaFiscalService fazemos a mesma coisa.
+de novo para usar a classe sera necessario passar o notificador pretendido como parametro no construtor.
+
+agora a classe  AtivacaoClienteService e EmissaoNotaFiscalService nao estao mais acopladas na implementacao do notificador. podemos agora ate ter um notificadorWhatsapp que nao precisamos mudar mais nada nessas classes.
+
+elas somente precisam saber que precisam notificar. a forma como vai ser feita a notificacao nao importa mais para elas, somente para quem precisa enviar a notificacao.
+
+isso é o principio de inversao de controle.
+ou seja as classes AtivacaoClienteService e EmissaoNotaFiscalService nao tem mais o controle de como a notificacao vai ser feita (e nem cabe a elas isso).
+
+entao a notificacao agora esta baseada no contrato da interface.
+
+essa inversao de controle (Inversion Of Control) se chama IOC.
+
+depois que agente fez essas alteraçoes nas duas classes do notificador, vamos no metodo que chama elas, no nosso exemplo o metodo main.
+
+nele agora instanciamos o notificador que queremos (email ou sms) mas colocamos o valor numa variavel do tipo notificador (interface).
+
+Notificador notificador = new NotificadorEmail();
+
+por exemplo.
+
+e na hora de criar a service AtivacaoClienteService, agente passa o notificador pretendido como parametro.
+
+AtivacaoClienteService ativacaoCliente = new AtivacaoClienteService(notificador);
+
+nessa hora, estamos manualmente injetando o notificador na instanciacao da AtivacaoClienteService.
+
+isso é uma injeçao de dependencias.
+
+se rodarmos agora o projeto sera notificado por email.
+
+se tivermos que alterar para sms basta alterar 
+
+Notificador notificador = new NotificadorEmail();
+
+para 
+
+Notificador notificador = new NotificadorSMS();
+
+pronto.
+
+ficamos com baixo acoplamento entre as classes.
+
+Notificador.java
+package com.algaworks.di.notificacao;
+
+import com.algaworks.di.modelo.Cliente;
+
+public interface Notificador {
+
+	void notificar(Cliente cliente, String mensagem);
+	
+}
+
+NotificadorEmail.java
+package com.algaworks.di.notificacao;
+
+import com.algaworks.di.modelo.Cliente;
+
+public class NotificadorEmail implements Notificador {
+
+	@Override
+	public void notificar(Cliente cliente, String mensagem) {
+		System.out.printf("Notificando %s através do e-mail %s: %s\n", 
+				cliente.getNome(), cliente.getEmail(), mensagem);
+	}
+	
+}
+
+NotificadorSMS.java
+package com.algaworks.di.notificacao;
+
+import com.algaworks.di.modelo.Cliente;
+
+public class NotificadorSMS implements Notificador {
+
+	@Override
+	public void notificar(Cliente cliente, String mensagem) {
+		System.out.printf("Notificando %s por SMS através do telefone %s: %s\n", 
+				cliente.getNome(), cliente.getTelefone(), mensagem);
+	}
+	
+}
+
+AtivacaoClienteService.java
+package com.algaworks.di.service;
+
+import com.algaworks.di.modelo.Cliente;
+import com.algaworks.di.notificacao.Notificador;
+
+public class AtivacaoClienteService {
+
+	private Notificador notificador;
+	
+	public AtivacaoClienteService(Notificador notificador) {
+		this.notificador = notificador;
+	}
+	
+	public void ativar(Cliente cliente) {
+		cliente.ativar();
+		
+		this.notificador.notificar(cliente, "Seu cadastro no sistema está ativo!");
+	}
+	
+}
+
+EmissaoNotaFiscalService.java
+package com.algaworks.di.service;
+
+import com.algaworks.di.modelo.Cliente;
+import com.algaworks.di.modelo.Produto;
+import com.algaworks.di.notificacao.Notificador;
+
+public class EmissaoNotaFiscalService {
+
+	private Notificador notificador;
+	
+	public EmissaoNotaFiscalService(Notificador notificador) {
+		this.notificador = notificador;
+	}
+	
+	public void emitir(Cliente cliente, Produto produto) {
+		// TODO emite a nota fiscal aqui...
+		
+		this.notificador.notificar(cliente, "Nota fiscal do produto "
+				+ produto.getNome() + " foi emitida!");
+	}
+	
+}
+
+
+Main.java
+package com.algaworks.di;
+
+import com.algaworks.di.modelo.Cliente;
+import com.algaworks.di.notificacao.Notificador;
+import com.algaworks.di.notificacao.NotificadorSMS;
+import com.algaworks.di.service.AtivacaoClienteService;
+
+public class Main {
+
+	public static void main(String[] args) {
+		Cliente joao = new Cliente("João", "joao@xyz.com", "3499998888");
+		Cliente maria = new Cliente("Maria", "maria@xyz.com", "1177772222");
+		
+		Notificador notificador = new NotificadorSMS();
+		
+		AtivacaoClienteService ativacaoCliente = new AtivacaoClienteService(notificador);
+		ativacaoCliente.ativar(joao);
+		ativacaoCliente.ativar(maria);
+	}
+	
+}
 
 
 
