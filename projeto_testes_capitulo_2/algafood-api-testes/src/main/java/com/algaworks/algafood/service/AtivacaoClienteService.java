@@ -10,7 +10,7 @@ import com.algaworks.algafood.notificacao.Notificador;
 public class AtivacaoClienteService {
 
 	//usando a interface para diminuir o acoplamento com a implementacao do notificador
-	@Autowired //injetando a dependencia com autowired
+	@Autowired(required = false) //injetando a dependencia com autowired e informando que nao é obrigatoria
 	private Notificador notificador;
 	
 	public AtivacaoClienteService(Notificador notificador) {

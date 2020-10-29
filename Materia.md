@@ -1136,6 +1136,71 @@ mas o que agente sempre usa, por simplicidade, é no proprio atributo.
 o problema de se usar no atributo é que dificulta um pouco os testes unitarios. é preciso fazer algumas tecnicas de mock para testar classes assim.
 
 
+### 2.15. Dependência opcional com @Autowired
+vamos ver agora como ter uma dependencia opcional dentro de um bean.
+
+vamos usar como exemplo o AtivacaoClienteService
+
+@Autowired
+private Notificador notificador;
+
+public AtivacaoClienteService(Notificador notificador) {
+	this.notificador = notificador;
+}
+
+public void ativar(Cliente cliente) {
+	cliente.ativar();
+
+	notificador.notificar(cliente, "Seu cadastro no sistema está ativo!");
+}
+
+do jeito que esta aqui, o Notificador será sempre obrigatorio.
+
+imagine que quando eu ativar o cliente, verifica se o notificador é nulo. se for faz uma coisa se nao for nulo notifica, deste jeito:
+
+@Autowired
+private Notificador notificador;
+
+public AtivacaoClienteService(Notificador notificador) {
+	this.notificador = notificador;
+}
+
+public void ativar(Cliente cliente) {
+	cliente.ativar();
+
+	if(notificador != null) {
+		notificador.notificar(cliente, "Seu cadastro no sistema está ativo!");
+	}else {
+		System.out.println("Nao existe notificador mas cliente foi ativado");
+	}
+}
+
+da forma que esta aqui, nao vai funcionar.
+
+a anotacao @Autowired obriga que a classe seja injetada.
+
+para colocar uma dependencia opcional agente precisa adicionar na anotacao @Autowired e colocar required = false
+
+assim:
+@Autowired( required = false)
+private Notificador notificador;
+
+public AtivacaoClienteService(Notificador notificador) {
+	this.notificador = notificador;
+}
+
+public void ativar(Cliente cliente) {
+	cliente.ativar();
+
+	if(notificador != null) {
+		notificador.notificar(cliente, "Seu cadastro no sistema está ativo!");
+	}else {
+		System.out.println("Nao existe notificador mas cliente foi ativado");
+	}
+}
+
+pronto. agora se por algum motivo nao existir a classe injetada, o compilador nao reportará o erro e em runtime, se nao houver Notificador instanciado o codigo executara o else.
+
 
 
 

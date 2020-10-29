@@ -21,7 +21,7 @@ public class NotificadorEmail implements Notificador {
 //		}
 //		System.out.printf("Notificando %s através do e-mail %s usando o servidor SMTP %s: %s\n", 
 //				cliente.getNome(), cliente.getEmail(), this.hostServidorSMTP, mensagem);
-		System.out.printf("Notificando %s através do e-mail %s usando o servidor SMTP %s: %s\n", 
+		System.out.printf("Notificando %s através do e-mail %s: %s\n", 
 				cliente.getNome(), cliente.getEmail(), mensagem);
 	}
 	
