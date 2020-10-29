@@ -1201,8 +1201,63 @@ public void ativar(Cliente cliente) {
 
 pronto. agora se por algum motivo nao existir a classe injetada, o compilador nao reportará o erro e em runtime, se nao houver Notificador instanciado o codigo executara o else.
 
+### 2.16. Ambiguidade de beans e injeção de lista de beans
+
+vamos falar de ambiguidade de beans e como fazer a desambiguacao de beans injetando uma lista de beans.
+
+imagine o seguinte:
+alem de termos o NotificadorEmail, vamos ter tambem um NotificadorSMS. os dois vao continuar implementando Notificador.
+
+@Component
+public class NotificadorSMS implements Notificador {
+
+	@Override
+	public void notificar(Cliente cliente, String mensagem) {
+		System.out.printf("Notificando %s através SMS no numero %s: %s\n", 
+				cliente.getNome(), cliente.getTelefone(), mensagem);
+	}
+	
+}
+
+ao salvarmos a classe nova, obtemos um erro:
+
+Parameter 0 of constructor in com.algaworks.algafood.service.AtivacaoClienteService required a single bean, but 2 were found:
+	- notificadorEmail: defined in file [E:\04-Google_drive\Desenvolvimento_2018\01-GIT_REPOSITORIES\2020-05-EspecialistaSpringRest\CursoEspecialistaSpringRest\projeto_testes_capitulo_2\algafood-api-testes\target\classes\com\algaworks\algafood\notificacao\NotificadorEmail.class]
+	- notificadorSMS: defined in file [E:\04-Google_drive\Desenvolvimento_2018\01-GIT_REPOSITORIES\2020-05-EspecialistaSpringRest\CursoEspecialistaSpringRest\projeto_testes_capitulo_2\algafood-api-testes\target\classes\com\algaworks\algafood\notificacao\NotificadorSMS.class]
 
 
+Action:
+
+Consider marking one of the beans as @Primary, updating the consumer to accept multiple beans, or using @Qualifier to identify the bean that should be consumed
+
+
+o que aconteceu é que na classe AtivacaoClienteService, tem uma injeçao de Notificador. antes a injecao nao tinha problemas porque somente uma classe estava implementando a interface, mas agora existem duas.
+
+o spring nao sabe qual usar e por isso lança o erro.
+
+required a single bean, but 2 were found
+
+na parte do log onde tem 'action', o spring sugere algumas soluçoes. vamos adotar nesta aula a 'updating the consumer to accept multiple beans', ou seja, ao inves de um objeto do tipo Notificador, vamos poder ter uma lista:
+
+ @Autowired 
+private List<Notificador> notificadores;
+
+desta forma o spring vai instanciar todos os beans que implementem Notificador
+
+para concluir o codigo adicionamos:
+
+public void ativar(Cliente cliente) {
+		cliente.ativar();
+
+		for (Notificador notificador : notificadores) {			
+			notificador.notificar(cliente, "Seu cadastro no sistema está ativo!");
+		}
+	}
+
+desta forma estamos falando que,
+independente de qual Notificador for instanciado, pegue todos, e notifique.
+
+nesse nosso exemplo, ele irá enviar um email e um SMS, mas se existissem outros notificadores, ele tambem iria notificar usando cada um deles.
 
 
 

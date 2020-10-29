@@ -1,5 +1,7 @@
 package com.algaworks.algafood.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -10,17 +12,15 @@ import com.algaworks.algafood.notificacao.Notificador;
 public class AtivacaoClienteService {
 
 	//usando a interface para diminuir o acoplamento com a implementacao do notificador
-	@Autowired(required = false) //injetando a dependencia com autowired e informando que nao é obrigatoria
-	private Notificador notificador;
+	@Autowired//injetando a dependencia com autowired 
+	private List<Notificador> notificadores;
 	
-	public AtivacaoClienteService(Notificador notificador) {
-		this.notificador = notificador;
-	}
-
 	public void ativar(Cliente cliente) {
 		cliente.ativar();
 
-		notificador.notificar(cliente, "Seu cadastro no sistema está ativo!");
+		for (Notificador notificador : notificadores) {			
+			notificador.notificar(cliente, "Seu cadastro no sistema está ativo!");
+		}
 	}
 	
 }
