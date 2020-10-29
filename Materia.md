@@ -682,5 +682,17 @@ public class Main {
 }
 
 
+### 2.10. Conhecendo o IoC Container do Spring
+a funcionalidade mais importante de todo o ecosistema spring é o spring IoC container que é a implementacao de injecao de dependencias do framework.
+
+esse container tambem é conhecido como spring context.
+
+ele é o responsavel de fazer a injeçao de dependencias no Spring.
+
+quando agente roda uma aplicacao spring o Ioc container é instanciado e começa a instanciar os beans que ele deve gerenciar.
+
+beans ou dependencies como tambem sao conhecidos, sao objetos gerenciados pelo container do spring.
+
+o container de ioc do spring é representado pela interface ApplicationContext.
 
 
