@@ -966,16 +966,174 @@ public AtivacaoClienteService ativacaoClienteService(Notificador notificador) {
 pronto. ja temos o sistema funcionando novamente.
 
 
+### 2.14. Conhecendo os pontos de injeção e a anotação @Autowired
+
+continuando com o codigo da aula anterior, mas vamos fazer algumas alteracoes para que possamos usar o codigo de uma forma mais enxuta.
+
+as definiçoes dos beans foram voltadas para @Component, 
+e as classes de configuracao nao vao ser necessarias (@Configuration).
+
+nesta aula vamos ver os pontos de injecao.
+
+o que sao os pontos de injecao?
+sao locais onde agente pode injetar os objetos dentro do beans.
+
+neste exemplo, o construtor esta sendo um ponto de injecao:
+
+@Component 
+public class AtivacaoClienteService {
+
+	private Notificador notificador;
+	
+	public AtivacaoClienteService(Notificador notificador) {
+		this.notificador = notificador;
+	}
+
+	public void ativar(Cliente cliente) {
+		cliente.ativar();
+
+		notificador.notificar(cliente, "Seu cadastro no sistema está ativo!");
+	}
+}
+
+existem outros pontos de injecao.
+
+continuando com o exemplo do contrutor, neste caso é simples, pois somente existe um construtor na classe, logo o spring nao tem duvidas sobre o que fazer.
+
+mas e se tivessemos outro construtor?
+
+@Component 
+public class AtivacaoClienteService {
+
+	//usando a interface para diminuir o acoplamento com a implementacao do notificador
+	private Notificador notificador;
+	
+	public AtivacaoClienteService(Notificador notificador) {
+		this.notificador = notificador;
+	}
+
+	public AtivacaoClienteService(String qualquer_coisa) {
+		
+	}
+
+	public void ativar(Cliente cliente) {
+		cliente.ativar();
+
+		notificador.notificar(cliente, "Seu cadastro no sistema está ativo!");
+	}
+}
+
+nesse caso o spring iria dar um erro, pois como ele identificou que existem dois construtores, ele nao soube qual dos dois utilizar e tentou usar o construtor padrao (o vazio).
+
+como nessa classe implementamos construtores, o java nao implementou o construtor padrao, nisso o spring nao conseguiu encontra-lo e gerou um erro.
+
+nesse caso, agente pode usar a anotacao @Autowired para definir qual construtor 'padrao' agente quer que o spring utilize.
+
+a classe ficaria assim:
+@Component 
+public class AtivacaoClienteService {
+
+	private Notificador notificador;
+	
+	@Autowired
+	public AtivacaoClienteService(Notificador notificador) {
+		this.notificador = notificador;
+	}
+
+	public AtivacaoClienteService(String qualquer_coisa) {
+		
+	}
+
+	public void ativar(Cliente cliente) {
+		cliente.ativar();
+
+		notificador.notificar(cliente, "Seu cadastro no sistema está ativo!");
+	}
+}
+
+pronto. agora funciona corretamente.
+
+a anotacao @Autowiered é opcional se somente existir um construtor.
+
+outro ponto de injeçao é atraves de um setter:
+
+@Component 
+public class AtivacaoClienteService {
+
+	private Notificador notificador;
+	
+	public AtivacaoClienteService(Notificador notificador) {
+		this.notificador = notificador;
+	}
+
+	public void ativar(Cliente cliente) {
+		cliente.ativar();
+
+		notificador.notificar(cliente, "Seu cadastro no sistema está ativo!");
+	}
+	
+
+	public void setNotificador(Notificador notificador) {
+		this.notificador = notificador;
+	}
+}
 
 
+somente deste jeito ele nao injetou o Notificador.
 
+precisa usar a anotacao @Autowired
 
+@Component 
+public class AtivacaoClienteService {
 
+	//usando a interface para diminuir o acoplamento com a implementacao do notificador
+	private Notificador notificador;
+	
+	public AtivacaoClienteService(Notificador notificador) {
+		this.notificador = notificador;
+	}
 
+	public void ativar(Cliente cliente) {
+		cliente.ativar();
 
+		notificador.notificar(cliente, "Seu cadastro no sistema está ativo!");
+	}
+	
+	@Autowired
+	public void setNotificador(Notificador notificador) {
+		this.notificador = notificador;
+	}
+}
 
+pronto. agora funciona corretamente de novo.
 
+outro ponto de injeçao é no atributo:
+@Component 
+public class AtivacaoClienteService {
 
+	@Autowired
+	private Notificador notificador;
+	
+	
+	public AtivacaoClienteService(Notificador notificador) {
+		this.notificador = notificador;
+	}
+
+	public void ativar(Cliente cliente) {
+		cliente.ativar();
+
+		notificador.notificar(cliente, "Seu cadastro no sistema está ativo!");
+	}
+}
+
+mesmo o atributo sendo privado, o spring consegue injetar ele.
+
+mas qual o melhor?
+o ideal é o do construtor pois ele deixa muito claro quando vamos instanciar a classe quais sao os elementos obrigatorios, neste caso do exemplo, o notificador.
+
+mas o que agente sempre usa, por simplicidade, é no proprio atributo.
+
+o problema de se usar no atributo é que dificulta um pouco os testes unitarios. é preciso fazer algumas tecnicas de mock para testar classes assim.
 
 
 
