@@ -1357,5 +1357,67 @@ public class NotificadorEmail implements Notificador {
 
 pronto. ambiguidade resolvida. 
 
+### 2.19. Desambiguação de beans com anotação customizada
+
+continuando com o exemplo da aula anterior e usando ainda o @Qualifier, vamos dar uma melhorada, para usarmos uma anotacao personalizada.
+
+um problema quando agente usa a anotacao @Qualifier é que agente tem que usar string no identificador e strings nao sao checadas em tempo de compilacao e tambem dificulta a refatoracao.
+@Qualifier("normal")
+
+para resolver esse problema, que fica bem mais elegante e que usa qualifier.
+
+entao, agente cria uma nova anotacao, neste caso vamos chamar de TipoDoNotificador
+
+colocamos o NivelUrgencia como o value.
+e anotamos a anotacao com @Qualifier
+e @Retention(RententionPolicy.RUNTIME)
+
+a retention informa quanto tempo a anotacao deve ficar na classe usada. se nao especificar nada nao vai funcionar. entao usamos o RententionPolicy.RUNTIME
+
+@Retention(RetentionPolicy.RUNTIME)
+@Qualifier
+public @interface TipoDoNotificador {
+	
+	NivelUrgencia value();
+
+}
+
+
+e criamos tambem uma enumeracao, para guardar os tipos de prioridade, bem simples:
+
+public enum NivelUrgencia {
+
+	URGENTE,
+	NORMAL
+}
+
+blz. criamos nossa anotacao personalizada que tambem é um qualificador.
+
+agora, na classe NotificadorSMS, em vez de usar o @Qualifier("urgente") vamos usar a nossa anotacao:
+
+@TipoDoNotificador(NivelUrgencia.URGENTE)
+@Component
+public class NotificadorSMS implements Notificador {
+
+
+e no NotificadorEmail a mesma coisa:
+@TipoDoNotificador(NivelUrgencia.NORMAL)
+@Component
+public class NotificadorEmail implements Notificador {
+
+e no ativacaoClienteService, ao inves de usar o @Qualifier, usamos tambem nossa anotacao:
+
+	@Autowired
+	@TipoDoNotificador(NivelUrgencia.URGENTE)
+	private Notificador notificador;
+
+
+pronto.
+agora caso precisemos refatorar, ou alterar fica mais facil, ao inves de usar strings.
+
+
+
+
+
 
 

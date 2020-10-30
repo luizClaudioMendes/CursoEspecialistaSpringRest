@@ -4,10 +4,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
+import com.algaworks.algafood.anotacao.TipoDoNotificador;
+import com.algaworks.algafood.enumeracao.NivelUrgencia;
 import com.algaworks.algafood.modelo.Cliente;
 
 //@Primary //em caso de ambiguidade de classes, o spring usara esta como principal
-@Qualifier("normal") //bean qualificado como normal
+//@Qualifier("normal") //bean qualificado como normal
+@TipoDoNotificador(NivelUrgencia.NORMAL) //desambiguacao
 @Component
 public class NotificadorEmail implements Notificador {
 	
