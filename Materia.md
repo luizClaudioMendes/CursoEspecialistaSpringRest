@@ -1302,8 +1302,60 @@ public class NotificadorEmail implements Notificador {
 
 o sistema volta a funcionar corretamente e no lugar que existir a ambiguidade, o spring seleciona o NotificadorEmail e envia a notificacao somente por email.
 
+### 2.18. Desambiguação de beans com @Qualifier
+voltando com o exemplo da aula anterior, retirando a anotacao @Primary. o problema da ambiguidade retorna.
+
+vamos supor a seguinte situacao.
+para comunicacoes urgentes, devemos usar o NotificadorSMS, para comunicacoes normais devemos usar o NotificadorEmail.
+
+ao inves de usar a anotacao @primary, usamos a anotacao @Qualifier("NOME_QUALIFICADOR")
+
+o @Qualifier coloca uma qualidade naquele bean.
+
+entao, na classe AtivacaoClienteService, usamos acima da propriedade do Notificador, a anotacao @Qualifier("urgente"):
+
+@Component 
+public class AtivacaoClienteService {
+
+	@Autowired
+	@Qualifier("urgente")
+	private Notificador notificador;
+	
+	public void ativar(Cliente cliente) {
+		cliente.ativar();
+
+		notificador.notificar(cliente, "Seu cadastro no sistema está ativo!");
+	}
+}
+
+e colocamos no notificadorSMS o @Qualifier
+
+@Qualifier("urgente")
+@Component
+public class NotificadorSMS implements Notificador {
+
+	@Override
+	public void notificar(Cliente cliente, String mensagem) {
+		System.out.printf("Notificando %s através SMS no numero %s: %s\n", 
+				cliente.getNome(), cliente.getTelefone(), mensagem);
+	}
+	
+}
+
+e colocamos no notificadorEmail o @Qualifier
+@Qualifier("normal") 
+@Component
+public class NotificadorEmail implements Notificador {
+
+	@Override
+	public void notificar(Cliente cliente, String mensagem) {
+		System.out.printf("Notificando %s através do e-mail %s: %s\n", 
+				cliente.getNome(), cliente.getEmail(), mensagem);
+	}
+}
 
 
+pronto. ambiguidade resolvida. 
 
 
 
