@@ -1,9 +1,11 @@
 package com.algaworks.algafood.notificacao;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import com.algaworks.algafood.modelo.Cliente;
 
+@Primary //em caso de ambiguidade de classes, o spring usara esta como principal
 @Component
 public class NotificadorEmail implements Notificador {
 	

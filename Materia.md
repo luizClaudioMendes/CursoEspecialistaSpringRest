@@ -1259,10 +1259,48 @@ independente de qual Notificador for instanciado, pegue todos, e notifique.
 
 nesse nosso exemplo, ele irá enviar um email e um SMS, mas se existissem outros notificadores, ele tambem iria notificar usando cada um deles.
 
+### 2.17. Desambiguação de beans com @Primary
+
+voltando as alteracoes da aula passada.
+
+supondo que, em caso de ambiguidade, queremos que a classe NotificadorEmail tenha prioridade sobre as outras.
+
+para isso basta usar a @Primary.
 
 
+voltando a classe AtivacaoClienteService ao estado anterior:
 
+@Component 
+public class AtivacaoClienteService {
 
+	
+	@Autowired
+	private Notificador notificador;
+	
+	public void ativar(Cliente cliente) {
+		cliente.ativar();
+
+		notificador.notificar(cliente, "Seu cadastro no sistema está ativo!");
+	}
+}
+
+voltamos a ter o mesmo erro.
+
+mas na classe NotificadorEmail, adicionando a anotacao @Primary:
+
+@Primary
+@Component
+public class NotificadorEmail implements Notificador {
+
+	@Override
+	public void notificar(Cliente cliente, String mensagem) {
+
+		System.out.printf("Notificando %s através do e-mail %s: %s\n", 
+				cliente.getNome(), cliente.getEmail(), mensagem);
+	}
+}
+
+o sistema volta a funcionar corretamente e no lugar que existir a ambiguidade, o spring seleciona o NotificadorEmail e envia a notificacao somente por email.
 
 
 

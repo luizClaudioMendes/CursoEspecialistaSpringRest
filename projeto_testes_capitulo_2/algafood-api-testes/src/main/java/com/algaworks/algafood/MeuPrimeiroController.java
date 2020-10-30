@@ -53,7 +53,7 @@ public class MeuPrimeiroController {
 		Cliente cliente = new Cliente("joao", "teste@teste.com", "1122223333");
 		
 		ativacaoClienteService.ativar(cliente);
-		return "Hello!";
+		return "TIVINHO ARRIOU";
 	}
 
 }
