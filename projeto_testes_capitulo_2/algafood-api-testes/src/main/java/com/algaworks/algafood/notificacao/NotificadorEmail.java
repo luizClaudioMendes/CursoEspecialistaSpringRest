@@ -2,6 +2,7 @@ package com.algaworks.algafood.notificacao;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import com.algaworks.algafood.anotacao.TipoDoNotificador;
@@ -12,6 +13,7 @@ import com.algaworks.algafood.modelo.Cliente;
 //@Qualifier("normal") //bean qualificado como normal
 @TipoDoNotificador(NivelUrgencia.NORMAL) //desambiguacao
 @Component
+@Profile("prod")
 public class NotificadorEmail implements Notificador {
 	
 //	private boolean caixaAlta;

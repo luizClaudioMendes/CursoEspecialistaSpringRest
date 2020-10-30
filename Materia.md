@@ -1415,6 +1415,61 @@ e no ativacaoClienteService, ao inves de usar o @Qualifier, usamos tambem nossa 
 pronto.
 agora caso precisemos refatorar, ou alterar fica mais facil, ao inves de usar strings.
 
+### 2.20. Mudando o comportamento da aplicação com Spring Profiles
+
+o spring profiles é uma forma de separar componentes da aplicacao que serao disponibilizados em certos ambientes.
+
+ex: producao e desenvolvimento
+
+entao vamos imaginar a seguinte situacao:
+no ambiente de desenvolvimento o sistema deve simular um mock de envio de email mas em produçao deve enviar o email.
+
+entao o NotificadorEmail envia um email real e o NotificadorEmailMock simula o envio.
+
+criamos o NotificadorEmailMock
+@Profile("dev")
+@TipoDoNotificador(NivelUrgencia.NORMAL) 
+@Component
+public class NotificadorEmailMock implements Notificador {
+
+	@Override
+	public void notificar(Cliente cliente, String mensagem) {
+		System.out.printf("Notificando %s através do e-mail %s: %s\n", 
+				cliente.getNome(), cliente.getEmail(), mensagem);
+	}
+}
+
+e colocamos no NotificadorEmail o @Profile
+
+@Profile("prod")
+public class NotificadorEmail implements Notificador {
+
+entao temos o profile prod e dev colocados.
+
+como ainda nao criamos os profiles, essas duas classes ainda nao sao encontradas no spring.
+
+entao em src/main/resources existe um arquivo de configuracao chamado application.properties
+
+nele adicionamos:
+spring.profiles.active=prod
+
+isso indica ao spring que o profile default é o prod.
+
+pronto. ao subirmos a aplicacao normalmente, ele assume o profile de prod e carrega todas as classes que nao tenham definicao de profile ou as que tenham o profile prod.
+
+podemos substituir os profiles por linha do comando tambem.
+
+no STS agente pode configurar, na aba Boot Dashboard, clicando com o direito no projeto > open config
+
+e no campo profile colocar o profile desejado, nesse caso o dev
+
+para passar por linha de comando:
+java -jar projeto.jar -Dspring.profiles.active=dev
+
+
+podemos passar outros profiles juntos, separando por virgula:
+
+spring.profiles.active=prod,mysql,AWS
 
 
 
