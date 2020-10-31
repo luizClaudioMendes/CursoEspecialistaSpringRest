@@ -1813,6 +1813,24 @@ na classe que sera usado os valores, injetamos a classe properties que criamos.
 no nosso exemplo, na classe NotificadorEmail, onde antes usamos as anotacoes @Value, agora usamos a nova classe de propriedades.
 
 
+### 2.27. Alterando a configuração do projeto dependendo do ambiente (com Spring Profiles)
+
+podemos ter arquivos de configuracao baseados em perfis do spring.
+
+lembrando que nestas configuracoes nao deve ter nenhuma informacao sensivel, como senhas e etc.
+
+entao, em src/main/resources, podemos criar os arquivos .properties
+
+o spring consulta o principal, que é o application.properties mas se nao encontrar, ele pesquisa no arquivo .properties designado para o perfil.
+
+como exemplo vamos criar os arquivos application-dev.properties e o application-prod.properties
+
+o -dev por exemplo simboliza o nome do perfil, entao este nome deve coincidir com o nome do perfil.
+
+e pronto.
+
+as propriedades que existirem nesses arquivos serao utilizadas, caso nao existam serao utilizadas as do arquivo default e caso nao existam sera retornado null.
+
 
 
 
