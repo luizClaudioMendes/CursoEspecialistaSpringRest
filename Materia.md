@@ -1638,6 +1638,26 @@ pronto. agora na hora que ativar o cliente sera notificado e emitida uma nota fi
 o importante é notar que, embora tenhamos criado uma classe listener, esse metodo poderia ficar na respectiva service, nao sendo necessario criar classes somente para receber os listeners
 
 
+### 2.23. Configurando projetos Spring Boot com o application.properties
+
+o arquivo application.properties é onde colocamos as propriedades do nosso projeto.
+
+o spring boot ja vem com um monte de propriedades já pre configuradas e que podemos sobrescrever.
+
+vamos usar como exemplo a porta onde o tomcat inicializa a aplicacao, que por default é a 8080.
+
+o spring tem um link que disponibiliza todas as configuracoes pre carregadas no sistema:
+https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-application-properties.html
+
+mas continuando com o exemplo. se quisermos trocar a porta onde o spring inicializa, basta procurarmos na lista a propriedade onde isso é setada, no caso a 
+server.port
+
+e colocar no nosso application.properties a porta pretendida:
+
+server.port=8081
+
+pronto. a porta foi alterada!
+
 
 
 
