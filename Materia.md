@@ -1471,8 +1471,60 @@ podemos passar outros profiles juntos, separando por virgula:
 
 spring.profiles.active=prod,mysql,AWS
 
+### 2.21. Criando métodos de callback do ciclo de vida dos beans
+
+todos os beans no spring tem um ciclo de vida. os ciclos de vida sao 3, a criacao, a utilizacao e a destruiçao.
+
+existem algumas maneiras de se interceptar o ciclo de vida de criacao e destruiçao. mas para que interceptar esses ciclos de vida? pode existir algum codigo que voce queira executar logo após a criacao do bean ou antes da sua destruiçao.
+
+o primeiro metodo é utilizando anotaçoes do java:
+na classe AtivacaoClienteService criamos dois metodos, que podem ter qualquer nome.
+um deles sera chamado na inicializacao e o outro na destuiçao do bean.
+
+a inicializacao usa a anotacao @PostConstruct e a destruiçao usa a anotacao @PreDestroy
+
+(...)
+private Notificador notificador;
+	
+@PostConstruct
+public void inicializar() {
+	System.out.println("Inicializando");
+}
+
+@PreDestroy
+public void destruir() {
+	System.err.println("destruindo");
+}
+
+public void ativar(Cliente cliente) {
+(...)
+
+o metodo inicializar é executado logo apos o contrutor ter terminado a construçao e todas as injeçoes terem sido injetadas.
+
+o metodo destruir é executado antes da destruicao do bean.
+
+outra forma de se fazer isso é usando a anotacao @Bean
+
+usando este exemplo de uma aula anterior, quando utilizamos a configuracao da inicializacao de classes (@Configuration):
+
+@Bean
+public AtivacaoClienteService ativacaoClienteService(Notificador notificador) {
+	return new AtivacaoClienteService(notificador);
+}
+
+com esses exemplo a situaçao é a seguinte:
+
+eu quero chamar os metodos inicializar e destruir mas nao quero usar as anotaçoes do java e uso uma classe de configuracao de bean.
+
+para isso, basta acrescentar na anotaca @Bean os metodos que queremos que sejam executados da seguinte forma:
+
+@Bean(initMethod = "inicializar", destroyMethod = "destruir")
+public AtivacaoClienteService ativacaoClienteService(
+
+existe uma terceira forma, que seria implementando duas interfaces na classe
 
 
+a InitializingBean tem o metodo afterPropertiesSet() que é o nosso metodo inicializar() e a DisposableBean tem o metodo destroy() que é o nosso destruir()
 
 
-
+usando essa tecnica, os metodos tem obrigatoriamente que serem chamados pelos respectivos nomes nas interfaces.
