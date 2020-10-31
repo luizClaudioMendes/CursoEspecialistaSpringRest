@@ -1,5 +1,6 @@
 package com.algaworks.algafood.notificacao;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import com.algaworks.algafood.anotacao.TipoDoNotificador;
@@ -8,6 +9,7 @@ import com.algaworks.algafood.modelo.Cliente;
 
 @TipoDoNotificador(NivelUrgencia.NORMAL) 
 @Component
+@Profile("dev")
 public class NotificadorEmailMock implements Notificador {
 
 	@Override

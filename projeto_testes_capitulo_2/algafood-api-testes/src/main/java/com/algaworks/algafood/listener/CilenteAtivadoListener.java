@@ -12,7 +12,7 @@ import com.algaworks.algafood.notificacao.Notificador;
 @Component
 public class CilenteAtivadoListener {
 	
-	@TipoDoNotificador(NivelUrgencia.URGENTE)
+	@TipoDoNotificador(NivelUrgencia.NORMAL)
 	@Autowired
 	private Notificador notificador;
 	

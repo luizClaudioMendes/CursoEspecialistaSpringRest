@@ -1698,6 +1698,45 @@ set SERVER_PORT=8082
 e para ver o valor:
 echo %SERVER_PORT%
 
+### 2.25. Criando e acessando propriedades customizadas com @Value
+
+como criar e acessar propriedades customizas no spring.
+
+imagine que agente queira configurar o host e a porta do servidor de email.
+
+no application.properties agente cria as nossas propriedades customizadas.
+os nomes das nossas propriedades podem ser qualquer coisa.
+
+notificador.email.host-servidor=smtp.algafood.com.br
+notificador.email.porta-servidor=25
+
+
+na classe NotificadorEmail vamos usar elas.
+
+para este exemplo vamos somente criar duas variaveis, para imprimir.
+
+@Profile("prod")
+public class NotificadorEmail implements Notificador {
+	
+	@Value("${notificador.email.host-servidor}")
+	private String host;
+	
+	@Value("${notificador.email.porta-servidor}")
+	private Integer porta;
+	
+	(...)
+
+a anotacao @Value é a responsavel por trazer o valor da propriedade.
+
+para pegar a propriedade, dentro do @Value colocamos "${NOME_VARIAVEL}"
+
+ex.
+@Value("${notificador.email.host-servidor}")
+
+e pronto. os valores ficam disponiveis na classe para utilizacao.
+
+
+
 
 
 
