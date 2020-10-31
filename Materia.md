@@ -1528,3 +1528,134 @@ a InitializingBean tem o metodo afterPropertiesSet() que é o nosso metodo inici
 
 
 usando essa tecnica, os metodos tem obrigatoriamente que serem chamados pelos respectivos nomes nas interfaces.
+
+### 2.22. Publicando e consumindo eventos customizados (EventListeners)
+
+existe um design pattern bem conhecido chamado Observer.
+ele principalmente deixa o acoplamento mais baixo entre as classes lancando eventos.
+
+o spring tambem tem essa implementacao, que chamaram de EventHandler.
+
+vamos continuar com o exemplo da classe ativacaoClienteService.
+
+hoje ela esta assim:
+@Autowired
+@TipoDoNotificador(NivelUrgencia.URGENTE)
+private Notificador notificador;
+
+@PostConstruct
+public void inicializar() {
+	System.out.println("Inicializando");
+}
+
+@PreDestroy
+public void destruir() {
+	System.err.println("destruindo");
+}
+
+public void ativar(Cliente cliente) {
+	cliente.ativar();
+
+	notificador.notificar(cliente, "Seu cadastro no sistema está ativo!");
+}
+
+ela esta acoplada com a classe Notificador e tambem o metodo ativar() esta com duas responsabilidades, ativar e notificar.
+
+agente pode alterar isso, fazendo com que nao chame diretamente dizer que queremos notificar o cliente, agente vai somente lançar um evento dizendo 'olha, o cliente foi ativado' e quem estiver ouvindo esse evento vai realizar as suas açoes.
+
+para fazer isso vamos, ainda na classe AtivacaoClienteService, retirar a chamada do notificador e adicionar a dependencia do publicador de eventos:
+
+@Component 
+public class AtivacaoClienteService {
+
+	@Autowired
+	private ApplicationEventPublisher eventPublisher;
+	
+	(...)
+	
+	public void ativar(Cliente cliente) {
+		cliente.ativar();
+
+		eventPublisher.publishEvent(new ClienteAtivadoEvent(cliente));
+
+	}
+}
+
+agora vamos criar uma classe de evento:
+public class ClienteAtivadoEvent {
+	
+	private Cliente cliente;
+
+	public ClienteAtivadoEvent(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+}
+
+
+o cliente dentro da classe é para levar os dados do cliente dento do evento.
+
+
+agora precisamos implementar o listener desse evento:
+@Component
+public class CilenteAtivadoListener {
+	
+	@TipoDoNotificador(NivelUrgencia.URGENTE)
+	@Autowired
+	private Notificador notificador;
+	
+	@EventListener
+	public void clienteAtivadoListener(ClienteAtivadoEvent event) {
+		notificador.notificar(event.getCliente(), "Seu cadastro no sistema esta ativo usando eventos!");
+	}
+}
+
+vamos acrescentar mais um listener ao evento. ao ativar o cliente vai criar uma nota fiscal.
+
+@Component
+public class CilenteAtivadoListener {
+	
+	@TipoDoNotificador(NivelUrgencia.URGENTE)
+	@Autowired
+	private Notificador notificador;
+	
+	@EventListener
+	public void notificarCliente(ClienteAtivadoEvent event) {
+		notificador.notificar(event.getCliente(), "Seu cadastro no sistema esta ativo usando eventos!");
+	}
+	
+	@EventListener
+	public void emitirNotaFiscal(ClienteAtivadoEvent event) {
+		System.out.println("Emitindo nota fiscal para o cliente " + event.getCliente().getNome());
+	}
+}
+
+pronto. agora na hora que ativar o cliente sera notificado e emitida uma nota fiscal.
+
+o importante é notar que, embora tenhamos criado uma classe listener, esse metodo poderia ficar na respectiva service, nao sendo necessario criar classes somente para receber os listeners
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
