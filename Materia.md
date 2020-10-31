@@ -1658,6 +1658,47 @@ server.port=8081
 
 pronto. a porta foi alterada!
 
+### 2.24. Substituindo propriedades via linha de comando e variáveis de ambiente
+
+as propriedades do arquivo application.properties tambem podem ser alteradas via linha de comando e variaveis de ambiente.
+
+supondo que voce gere o jar da applicacao e vai leva-la para a maquina de homologacao.
+
+la voce quer que ela rode na porta 8083
+
+entao na linha de comando voce digita:
+java -jar nome_do_jar.jar 
+
+ele inicia na porta definida no arquivo properties ou na porta default.
+
+para mudar a configuracao:
+java -jar nome_do_jar.jar --server.port=8083
+
+pronto. a aplicacao vai inicializar na porta 8083
+
+tem tambem outra forma que é por variavel de ambiente:
+
+no linux ou mac é desta forma:
+no terminal:
+export NOME_VARIAVEL=VALOR
+ex:
+export SERVER_PORT=8083
+
+para ver o valor da variavel:
+echo $NOME_VARIAVEL
+
+ex:
+echo $SERVER_PORT
+
+no windows, pela linha de comando:
+set NOME_VARIAVEL=VALOR
+ex:
+set SERVER_PORT=8082
+
+e para ver o valor:
+echo %SERVER_PORT%
+
+
 
 
 
