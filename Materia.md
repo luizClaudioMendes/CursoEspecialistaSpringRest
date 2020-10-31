@@ -1831,6 +1831,32 @@ e pronto.
 
 as propriedades que existirem nesses arquivos serao utilizadas, caso nao existam serao utilizadas as do arquivo default e caso nao existam sera retornado null.
 
+### 2.28. Ativando o Spring Profile por linha de comando e variável de ambiente
+
+com o jar da aplicacao, podemos inicializar a aplicacao usando a linha de comando. 
+
+com isso podemos passar valores para as variaveis usando a linha de comando ou variaveis de ambiente.
+
+para iniciar a aplicacao na linha de comando usamos:
+java -jar NOME_DO_JAR_DA_APLICACAO.jar
+
+com isso ela subira com o perfil default ou caso esteja definido algum perfil como ativo, esse perfil.
+
+java -jar NOME_DO_JAR_DA_APLICACAO.jar --spring.profiles.active=prod 
+
+
+outra forma de ativar o perfil é por variavel de ambiente:
+
+mac e linux:
+export SPRING_PROFILES_ACTIVE=prod
+
+windows:
+ver as aulas anteriores
+
+agora ja nao precisamos passar na linha de comando o perfil:
+java -jar NOME_DO_JAR_DA_APLICACAO.jar 
+
+
 
 
 
