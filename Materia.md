@@ -1736,10 +1736,81 @@ ex.
 e pronto. os valores ficam disponiveis na classe para utilizacao.
 
 
+### 2.26. Acessando propriedades com @ConfigurationProperties
+
+uma outra forma de se utilizar os valores das propriedades customizadas, e que é melhor que o @Value, pois permite refactor mais facilmente é usando uma classe anotada com @ConfigurationProperties
+
+quando um projeto começa a crescer fica dificil manter a forma de usar as propriedades customizadas usando o @Value, pois se voce alterar um nome de uma variavel por exemplo voce precisa sair correndo atras no sistema todo onde ela foi usada.
+
+entao agente pode criar varias classes de configuracao de propriedades.
+
+como estamos falando de notificador, entao vamos criar a NotificadorProperties.java
+
+public class NotificadorProperties {
+	
+	private String hostServidor;
+	private Integer portaServidor;
+
+}
+
+os nomes dessas duas variaveis deve ser identicos aos das propriedades no application.properties, com o detalhe de ser camelCase e nao conter simbolos.
+
+elas estao mapeando estas duas propriedades:
+notificador.email.host-servidor=smtp.algafood.com.br
+notificador.email.porta-servidor=25
+
+entao host-servidor virou hostServidor e porta-servidor virou portaServidor
+
+mas isso ainda nao funciona. precisamos colocar mais coisas:
+
+precisamos adicionar na classe de configuracao 
+a anotacao @Component 
+a anotacao @ConfigurationProperties("notificador.email")
+esta anotacao indentifica que este é um arquivo de propriedades e como parametro passamos o prefixo.
+o prefixo é o que antecede o nome da variavel.
+
+ex. a variavel:
+notificador.email.porta-servidor=25
+
+tem como nome: porta-servidor
+e prefixo: notificador.email
+
+e agora criar os getters e setters.
+
+e pronto. a classe esta representando as configuracoes do notificador.
+
+o STS, na classe anotada com @ConfigurationProperties, na propria anotacao pode emitir um alerta. as outras IDEs nao vao fazer isso mas voce pode fazer manualmente este procedimento.
+
+o STS esta sugerindo que agente adicione no POM uma dependencia que auxilia o desenvolvedor gerando o autocomplete das classes de configuracao.
+
+se adicionarmos a dependencia, no arquivo application.properties o autocomplete sera incrementado com as nossas novas configuracoes presentes na classe.
+
+o codigo no pom que ele adicionou foi:
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-configuration-processor</artifactId>
+	<optional>true</optional>
+</dependency>
+
+inclusive, por conta deste fato, é recomendado usar javadoc nas variaveis na classe de configuracao. essa documentaçao ira aparecer no autocomplete, da mesma forma que as configuracoes oficiais.
+
+outro detalhe nas classes de configuracao:
+
+se ao criarmos a variavel e atribuirmos um valor a mesma, ela sera usada como default. isso quer dizer que, se a propriedade nao tiver nenhum valor na application.properties, o valor que será usado é o da classe.
+
+ex:
+se especificarmos que a porta a ser usada seria a 99 como default, se nao houver lancamento dessa propriedade no arquivo application.properties ele utilizará 99 como valor.
+
+/**
+ * porta do serividor de email
+ */
+private Integer portaServidor = 99;
 
 
+como usar os valores agora?
+na classe que sera usado os valores, injetamos a classe properties que criamos.
 
-
+no nosso exemplo, na classe NotificadorEmail, onde antes usamos as anotacoes @Value, agora usamos a nova classe de propriedades.
 
 
 
