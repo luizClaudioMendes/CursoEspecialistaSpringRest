@@ -1857,6 +1857,95 @@ agora ja nao precisamos passar na linha de comando o perfil:
 java -jar NOME_DO_JAR_DA_APLICACAO.jar 
 
 
+### 3.1. Instalando o MySQL Server e MySQL Workbench
+Durante as aulas, eu vou usar o MySQL Server 5.7.
+
+O MySQL Server 8 ainda não é suportado por algumas ferramentas de gerenciamento de banco de dados (como o Sequel Pro, por exemplo) e o próprio MySQL Workbench 8 não tinha suporte para a versão do meu sistema operacional (na data de gravação da aula).
+
+*Mas nós testamos o projeto com o MySQL Server 8 e funciona perfeitamente.*
+
+Ou seja, fique à vontade para usar o MySQL Server 5.7 (versão mais usada atualmente em produção) ou o MySQL Server 8.x.
+
+Caso você decida usar o MySQL Server 8.x, lembre que terá que instalar uma ferramenta de gerenciamento atualizada e que dê suporte ao seu sistema operacional. O MySQL Workbench 8 é uma boa ferramenta para isso (mas não funciona no macOS High Sierra).
+
+Só para esclarecer, o MySQL Server 5.7 foi a última versão antes do MySQL Server 8. Eu sei que parece um pouco confuso, mas antes do MySQL Server 8, não existiram as versões 6 e 7.
+
+#### Instalando o MySQL Server
+O MySQL Server é o banco de dados open source mais popular do mundo. Vamos instalar a distribuição Community Edition, que é gratuita.
+
+Windows
+Acesse https://dev.mysql.com/downloads/mysql/ e faça download do arquivo de instalação.
+
+Para usar a versão 5.7, clique no link "Looking for previous GA versions?".
+
+Selecione a versão 5.7 na caixa "Select Version" e clique no botão "Go to Download Page".
+
+aixe o arquivo completo, sem ser o web installer (segunda opção).
+
+Execute o arquivo de instalação baixado e siga o passo a passo.
+
+Quando solicitar o tipo de configuração, mantenha selecionado "Developer Default" e clique em "Next".
+
+Quando solicitar a seleção de produtos e funcionalidades, você pode deixar na caixa à direita apenas "MySQL Server" e "MySQL Workbench".
+
+Na tela "High Availability", mantenha a opção previamente selecionada e clique em "Next".
+
+Em "Account and Roles", digite e confirme uma senha para o usuário administrador (root) e clique em "Next".
+
+Em "Windows Service", apenas clique em "Next".
+
+Depois, aplique a configuração clicando em "Execute".
+
+Ubuntu (Linux)
+Para instalar o MySQL Server 5.7, abra o terminal e digite os comandos:
+
+$ sudo apt update
+$ sudo apt install mysql-server
+Caso queira configurar o usuário no MySQL de forma simples, basta executar o comando:
+
+$ mysql_secure_installation
+Para instalar a versão 8.x, é necessário fazer mais alguns procedimentos.
+
+Vá para a pasta /tmp e baixe o arquivo .deb, conforme demonstrado abaixo, para que possamos adicionar o repositório necessário para instalar o MySQL Server 8:
+
+$ cd /tmp
+$ curl -OL https://dev.mysql.com/get/mysql-apt-config_0.8.10-1_all.deb
+Depois disso, iremos instalar o arquivo .deb assim:
+
+$ sudo dpkg -i mysql-apt-config*
+Após a adição do repositório, ao ser solicitado, pressione a tecla ENTER e em seguida execute o comando abaixo, para atualizarmos a lista de repositórios:
+
+$ sudo apt update
+Depois disso, você será capaz de instalar o MySQL Server 8 normalmente, dessa forma:
+
+$ sudo apt install mysql-server
+macOS
+Abra o terminal e instale o Homebrew (um gerenciador de pacotes para Mac), caso ainda não tenha instalado:
+
+$ /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+Execute o comando abaixo para instalar o MySQL Server 5.7, usando o Homebrew:
+
+$ brew install mysql@5.7
+Inicie o serviço do MySQL Server:
+
+$ brew services start mysql@5.7
+Para instalar o MySQL Server 8 usando o Homebrew, execute o comando:
+
+$ brew install mysql
+E para iniciar o serviço do MySQL Server 8, execute:
+
+$ brew services start mysql
+Instalando o MySQL Workbench
+O MySQL Workbench é uma ferramenta para DBAs e desenvolvedores que usam o banco de dados MySQL Server.
+
+No Windows, pode ser que você já tenha instalado o MySQL Workbench junto com o MySQL Server. Se esse for o caso, seu ambiente já está pronto. Não precisa baixar e instalar o Workbench novamente.
+
+Caso não tenha instalado, acesse https://dev.mysql.com/downloads/workbench/ e faça o download do arquivo de instalação para o seu sistema operacional.
+
+Execute o arquivo de instalação e siga os passos.
+
+Você pode usar qualquer outra ferramenta de sua preferência para gerenciar o banco de dados, desde que ela tenha suporte à versão do MySQL Server que você está usando.
+
 
 
 
