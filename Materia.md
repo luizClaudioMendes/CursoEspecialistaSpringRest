@@ -2159,7 +2159,17 @@ pronto. agora ao iniciarmos o projeto, o spring ira criar as tabelas par nos.
 OBS: os atibutos passados na @Column, são somente para criacao da tabela, nao para validacao dos atributos.
 
 
+### 3.6. Mapeando o id da entidade para autoincremento
 
+neste momento, as tabelas estao sendo criadas mas a coluna id nao esta com auto incremento.
+
+o auto incremento significa que o BD é responsavel por gerar o id de cada inserçao.
+
+para informar que o BD deve ser responsavel devemos acrescentar no atributo id a anotacao @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+@Id
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+private Long id;
 
 
 
