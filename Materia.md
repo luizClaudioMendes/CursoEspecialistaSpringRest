@@ -2034,11 +2034,45 @@ como fica a persistencia de dados usando JPA?
 o codigo fala com a implementacao do JPA (que nesse caso sera o hibernate) que fala com o driver que fala com o banco de dados.
 
 
+### 3.3. Adicionando JPA e configurando o Data Source
+
+Em um projeto novo, configurado somente com o spring web, vamos adicionar o JPA para nos podermos continuar com os estudos.
+
+clicando com o direito no projeto, depois em spring > edit starters
+
+procuramos por jpa e adicionamos o spring data JPA e adicionamos ele ao projeto.
+
+ele adicionou a dependencia do spring data no pom:
+
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-data-jpa</artifactId>
+</dependency>
+
+vamos agora configurar o nosso datasource.
+
+no arquivo application.properties vamos adicionar:
+
+spring.datasource.url=jdbc:mysql://localhost:3306/algafood?createDatabaseIfNotExist=true&serverTimezone=UTC
+spring.datasource.username=root
+spring.datasource.password=root
 
 
+agora vamos adicionar o driver do mysql no projeto:
 
+clicando com o direito no projeto, depois em spring > edit starters
 
+procurar por mysql e adicionar o driver mysql
 
+ele adicionou a dependencia do spring data no pom:
+
+<dependency>
+	<groupId>mysql</groupId>
+	<artifactId>mysql-connector-java</artifactId>
+	<scope>runtime</scope>
+</dependency>
+
+nao foi especificado a versao pois o projeto parent especifica para nos.
 
 
 
