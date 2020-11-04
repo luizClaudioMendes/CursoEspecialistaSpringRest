@@ -2138,6 +2138,26 @@ o atributo id, como nao especificamos o @Column, o JPA ira buscar por uma coluna
 
 o equals e hashcode foram gerados a partir do id, pois é o que diferencia a classe.
 
+### 3.5. Criando as tabelas do banco a partir das entidades
+
+neste momento ja temos as classes java das entidades mas agora podemos criar as tabelas.
+
+neste exemplo, vamos ver uma forma de criar as tabelas automaticamente a partir do mapeamento nas classes.
+
+NAO É UMA BOA PRATICA FAZER ISSO EM PRODUCAO. SOMENTE EM DESENVOLVIMENTO.
+
+o JPA e o Hibernate ja vem por default NAO FAZENDO ISSO.
+É NECESSARIO INFORMAR O JPA/HIBERNATE ESPECIFICAMENTE QUE VOCE QUER FAZER ISSO.
+
+entao, no application.properties, vamos adicionar mais duas entradas:
+
+spring.jpa.generate-ddl=true
+spring.jpa.hibernate.ddl-auto=create
+
+pronto. agora ao iniciarmos o projeto, o spring ira criar as tabelas par nos.
+
+OBS: os atibutos passados na @Column, são somente para criacao da tabela, nao para validacao dos atributos.
+
 
 
 
