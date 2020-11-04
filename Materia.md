@@ -2172,6 +2172,26 @@ para informar que o BD deve ser responsavel devemos acrescentar no atributo id a
 private Long id;
 
 
+### 3.7. Importando dados de teste com import.sql
+quando agente usa o generate ddl (application.properties) ele cria a tabela do zero, agente pode usar uma tecnica para popular as tabelas com dados logo apos serem criadas.
+
+para isso usamos o arquivo import.sql
+
+em src/main/resources criamos um novo arquivo, que por padrao deve se chamar import.sql.
+
+nele colocamos o sql de insert nas tabelas que queremos.
+
+ATENÇAO: FAZER ISSO SOMENTE EM DESENVOLVIMENTO
+
+import.sql
+insert into cozinha (nome) values ('Tailandesa');
+insert into cozinha (nome) values ('Indiana');
+
+pronto. agora quando ele recriar as tabelas ele ira inserir em cozinha os dois valores que indicamos no arquivo.
+
+
+
+
 
 
 
