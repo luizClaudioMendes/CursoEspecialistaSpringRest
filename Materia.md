@@ -1946,6 +1946,85 @@ Execute o arquivo de instalação e siga os passos.
 
 Você pode usar qualquer outra ferramenta de sua preferência para gerenciar o banco de dados, desde que ela tenha suporte à versão do MySQL Server que você está usando.
 
+### 3.2. O que é JPA e Hibernate?
+
+o que é persistencia de dados?
+é a preservaçao de dados alem da execuçao do software.
+
+a persistencia de dados usando java puro
+
+imagem1.png
+
+o codigo java conversa com o driver JDBC, que intermedia o acesso da aplicacao com o banco de dados.
+cada banco de dados tem pelo menos um driver.
+
+o codigo java conversa somente com o driver e este conversa com o banco de dados.
+
+imagem2.png
+
+usando desta forma, o SQL precisa ser escrito inteiramente visando o banco de dados. 
+
+todas os atributos dos objetos devem ser passados diretamente na posicao certa para a inserçao dos dados.
+
+isso é a utilizacao de persistencia sem a utilizacao do JPA.
+
+imagem3.png
+
+a consulta tambem fica onerosa, sendo necessario converter cada coluna do banco de dados no seu respectivo atributo do objeto.
+
+desta forma tambem é oneroso fazer a recuperaçao dos objetos.
+
+embora funcione, nao é recomendada devido ao trabalho que gera para persistencia e recuperacao dos dados.
+
+#### o que é o ORM?
+object relational mapping, é uma tecnica de mapeamento de classes para a tabela do banco relacional, de forma a simplificar as operaçoes com o banco de dados, deixando o programador mais concentrado nos objetos e menos nas tabelas do banco de dados.
+
+imagem4.png
+
+as tabelas sao representadas pela classe, as linhas sao objetos, a coluna sao os atributos e a chave estrangeira sao as associacoes nos objetos.
+
+imagem5
+
+as anotaçoes auxiliam na representacao do objeto java para a tabela. elas fazem os vinculos entra os atributos e as colunas.
+
+imagem6
+
+a persistencia com ORM é acrescida de uma camada, a aplicacao java fala com a solucao de ORM, que traduz isso para o driver que fala com o banco de dados.
+
+assim agente reduz a complexidade de como fazer a persistencia e recuperacao de dados na aplicacao.
+
+imagem7
+
+a imagem7 tambem é um codigo JPA.
+
+a solucao ORM faz a persistencia de objetos e ela é a responsavel por traduzir isso na linguagem de banco de dados, usando o mapeamento.
+
+imagem8
+
+a recuperacao de dados tambem é mais facil.
+
+nao precisamos escrever SQL direto no codigo, o que, alem de deixar o codigo mais enxuto, facilita a troca de banco de dados sem necessidade de refatorar o codigo.
+
+o que é JPA (Java Persistence API)?
+
+é uma especificacao JEE, uma solucao ORM para persistencia de dados padronizada.
+
+o JPA define a forma de mapeamento objeto relacional, possui uma api de consulta e modificacao de objetos e uma linguagem propria tambem, a JPQL.
+
+JPA nao funciona sozinho, é uma especificacao.
+
+o que é o hibernate?
+
+o hibernate é uma das implementacoes do JPA. ele é o produto que colocamos no projeto. o JPA descreve como serao realizadas as alteraçoes no banco de dados e o hibernate ou afim, é que implementa essa especificacao e executa a alteracao.
+
+o hibernate nao executa um vendor lock in, ou seja nao ficamos presos no hibernate, podendo trocar facilmente de ORM.
+
+imagem9
+
+como fica a persistencia de dados usando JPA?
+
+o codigo fala com a implementacao do JPA (que nesse caso sera o hibernate) que fala com o driver que fala com o banco de dados.
+
 
 
 
