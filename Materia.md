@@ -1952,7 +1952,7 @@ o que é persistencia de dados?
 é a preservaçao de dados alem da execuçao do software.
 
 a persistencia de dados usando java puro
-
+![](https://github.com/luizClaudioMendes/CursoEspecialistaSpringRest/blob/master/imagens_materia/capitulo_3-2/imagem1.PNG)
 imagem1.png
 
 o codigo java conversa com o driver JDBC, que intermedia o acesso da aplicacao com o banco de dados.
@@ -1960,6 +1960,7 @@ cada banco de dados tem pelo menos um driver.
 
 o codigo java conversa somente com o driver e este conversa com o banco de dados.
 
+![](https://github.com/luizClaudioMendes/CursoEspecialistaSpringRest/blob/master/imagens_materia/capitulo_3-2/imagem2.PNG)
 imagem2.png
 
 usando desta forma, o SQL precisa ser escrito inteiramente visando o banco de dados. 
@@ -1968,6 +1969,7 @@ todas os atributos dos objetos devem ser passados diretamente na posicao certa p
 
 isso é a utilizacao de persistencia sem a utilizacao do JPA.
 
+![](https://github.com/luizClaudioMendes/CursoEspecialistaSpringRest/blob/master/imagens_materia/capitulo_3-2/imagem3.PNG)
 imagem3.png
 
 a consulta tambem fica onerosa, sendo necessario converter cada coluna do banco de dados no seu respectivo atributo do objeto.
@@ -1979,26 +1981,31 @@ embora funcione, nao é recomendada devido ao trabalho que gera para persistenci
 #### o que é o ORM?
 object relational mapping, é uma tecnica de mapeamento de classes para a tabela do banco relacional, de forma a simplificar as operaçoes com o banco de dados, deixando o programador mais concentrado nos objetos e menos nas tabelas do banco de dados.
 
+![](https://github.com/luizClaudioMendes/CursoEspecialistaSpringRest/blob/master/imagens_materia/capitulo_3-2/imagem4.PNG)
 imagem4.png
 
 as tabelas sao representadas pela classe, as linhas sao objetos, a coluna sao os atributos e a chave estrangeira sao as associacoes nos objetos.
 
+![](https://github.com/luizClaudioMendes/CursoEspecialistaSpringRest/blob/master/imagens_materia/capitulo_3-2/imagem5.PNG)
 imagem5
 
 as anotaçoes auxiliam na representacao do objeto java para a tabela. elas fazem os vinculos entra os atributos e as colunas.
 
+![](https://github.com/luizClaudioMendes/CursoEspecialistaSpringRest/blob/master/imagens_materia/capitulo_3-2/imagem6.PNG)
 imagem6
 
 a persistencia com ORM é acrescida de uma camada, a aplicacao java fala com a solucao de ORM, que traduz isso para o driver que fala com o banco de dados.
 
 assim agente reduz a complexidade de como fazer a persistencia e recuperacao de dados na aplicacao.
 
+![](https://github.com/luizClaudioMendes/CursoEspecialistaSpringRest/blob/master/imagens_materia/capitulo_3-2/imagem7.PNG)
 imagem7
 
 a imagem7 tambem é um codigo JPA.
 
 a solucao ORM faz a persistencia de objetos e ela é a responsavel por traduzir isso na linguagem de banco de dados, usando o mapeamento.
 
+![](https://github.com/luizClaudioMendes/CursoEspecialistaSpringRest/blob/master/imagens_materia/capitulo_3-2/imagem8.PNG)
 imagem8
 
 a recuperacao de dados tambem é mais facil.
@@ -2019,6 +2026,7 @@ o hibernate é uma das implementacoes do JPA. ele é o produto que colocamos no 
 
 o hibernate nao executa um vendor lock in, ou seja nao ficamos presos no hibernate, podendo trocar facilmente de ORM.
 
+![](https://github.com/luizClaudioMendes/CursoEspecialistaSpringRest/blob/master/imagens_materia/capitulo_3-2/imagem9.PNG)
 imagem9
 
 como fica a persistencia de dados usando JPA?
