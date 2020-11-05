@@ -23,6 +23,10 @@ public class CadastroCozinha {
 	
 	}
 	
+	public Cozinha buscar(Long id) {
+		return manager.find(Cozinha.class, id);
+	}
+	
 	@Transactional//transacao do spring para alteracao do banco de dados
 	public Cozinha adicionar(Cozinha cozinha) {
 		return manager.merge(cozinha);
