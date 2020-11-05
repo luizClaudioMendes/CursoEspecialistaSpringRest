@@ -9,7 +9,7 @@ import org.springframework.context.ApplicationContext;
 import com.algaworks.algafood.AlgafoodApiApplication;
 import com.algaworks.algafood.domain.model.Cozinha;
 
-public class AlteracaoCozinhaMain {
+public class ApagarCozinhaMain {
 	
 	public static void main(String[] args) {
 		//a ideia do teste é iniciar a aplicacao por aqui.
@@ -22,12 +22,10 @@ public class AlteracaoCozinhaMain {
 		//inicio dos testes
 		CadastroCozinha cadastroCozinha = applicationContext.getBean(CadastroCozinha.class);
 		
-		//alterar
+		//deletar
 		Cozinha cozinha = new Cozinha();
-		cozinha.setNome("Brasileira");
-		cozinha.setId(1L);//vai alterar a cozinha de id 1 com nome tailandesa para brasileira
-		
-		cozinha = cadastroCozinha.salvar(cozinha);
+		cozinha.setId(1L);//vai deletar a cozinha de id 1 		
+		cadastroCozinha.apagar(cozinha);
 		
 		
 		

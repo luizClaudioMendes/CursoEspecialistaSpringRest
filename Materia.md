@@ -2308,11 +2308,117 @@ cozinha = cadastroCozinha.salvar(cozinha);
 pronto. a cozinha de id 1 foi alterada
 
 
+https://blog.algaworks.com/tutorial-jpa/
+(...)
+Diferença entre o persist e o merge
+O método persist serve para entidades novas, que acabaram de ser criadas e que ainda não existem na base de dados.
+
+Quando passamos uma nova entidade para ele, o mesmo a torna uma entidade gerenciada e que será inserida na base.
+
+O objetivo do método merge é tornar um objeto novo como gerenciado.
+
+Mas não é a exata instância passada para ele que será gerenciada.
+
+Ele pega a instância dada a ele e faz uma cópia. Essa sim é a instância gerenciada.
+
+Para ter acesso a ela, basta pegar o retorno do merge. Assim:
+
+1
+cliente = entityManager.merge(cliente);
+Uma vez que a instância está como gerenciada, qualquer alteração na mesma é enviada para a base de dados no momento do flush e confirmada no commit da transação.
+(...)
 
 
+### 3.12. Excluindo um objeto do banco de dados
+agora vamos excluir um objeto do banco de dados.
 
+a exclusao de um objeto do BD usando JPA é muito facil mas tem alguns detalhes.
 
+se o objeto tiver sido recuperado do banco de dados atraves do find ou similares ou tiver sido persistido no banco dentro do atual contexto, o metodo remove() do EntityManager ira conseguir apagá-lo.
 
+mas e se for uma entidade criada com o new Entidade()?
+
+bom, ai o JPA nao consegue apaga-lo e lançara uma exception.
+
+o motivo disso acontecer é que o estado do objeto nesse ponto é Transient ou Detached.
+
+os objetos com esses estados nao sao gerenciados pelo JPA e por isso nao podem ser apagados.
+
+https://blog.algaworks.com/tutorial-jpa/
+
+(...)
+Estados de uma entidade
+Uma entidade pode assumir alguns estados com relação ao EntityManager. Os estados podem ser:
+
+Novo (new ou transient)
+Gerenciado (managed)
+Removido (removed)
+Desanexado (detached)
+O estado “novo” é o mais natural. É simplesmente quando construímos um objeto qualquer usando o operador new.
+
+Para estar no estado “gerenciado”, podemos chamar os métodos persist, merge ou buscar a entidade usando o EntityManager.
+
+O estado “removido” é alcançado quando chamamos o método remove.
+
+Por último, uma entidade fica no estado “desanexado” quando é passada para o método detach.
+
+Importante notar que entidades desanexadas podem voltar a ser gerenciadas com a chamada do método merge.
+
+Veja como fica no diagrama abaixo.
+
+imagem1
+
+Diagrama de estados
+
+Repare os comentários no código abaixo:
+
+public static void main(String... args) {
+  EntityManagerFactory entityManagerFactory 
+        = Persistence.createEntityManagerFactory("Clientes-PU");
+  EntityManager entityManager = entityManagerFactory.createEntityManager();
+     
+  // Estado novo
+  Cliente cliente = new Cliente();
+  cliente.setNome("Construtora Silva");
+ 
+  entityManager.getTransaction().begin();
+ 
+  // Estado gerenciado
+  entityManager.persist(cliente);
+ 
+  // Estado desanexado (nenhuma operação será feita)
+  entityManager.detach(cliente);
+ 
+  // Volta ao estado gerenciado 
+  cliente = entityManager.merge(cliente);
+ 
+  // Estado removido (será removido da base de dados)
+  entityManager.remove(cliente);
+ 
+  entityManager.getTransaction().commit();
+ 
+  entityManager.close();
+  entityManagerFactory.close();
+}
+
+(...)
+
+entao, para conseguirmos apagar a entidade no nosso exemplo precisamos antes chamar o metodo buscar() passando o id. desta forma a cozinha fica no modo managed e podemos apaga-la.
+
+@Transactional
+public void apagar(Cozinha cozinha) {
+	cozinha = buscar(cozinha.getId());
+	manager.remove(cozinha);
+}
+
+e a chamada do codigo foi:
+
+//deletar
+Cozinha cozinha = new Cozinha();
+cozinha.setId(1L);//vai deletar a cozinha de id 1 		
+cadastroCozinha.apagar(cozinha);
+
+com isso conseguimos apagar a cozinha de id 1.
 
 
 
