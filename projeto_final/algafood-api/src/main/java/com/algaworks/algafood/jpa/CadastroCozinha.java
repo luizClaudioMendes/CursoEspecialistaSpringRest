@@ -28,7 +28,7 @@ public class CadastroCozinha {
 	}
 	
 	@Transactional//transacao do spring para alteracao do banco de dados
-	public Cozinha adicionar(Cozinha cozinha) {
+	public Cozinha salvar(Cozinha cozinha) {
 		return manager.merge(cozinha);
 	}
 }

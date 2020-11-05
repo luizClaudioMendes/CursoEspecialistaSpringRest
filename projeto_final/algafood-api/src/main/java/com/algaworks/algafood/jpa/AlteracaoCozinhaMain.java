@@ -9,7 +9,7 @@ import org.springframework.context.ApplicationContext;
 import com.algaworks.algafood.AlgafoodApiApplication;
 import com.algaworks.algafood.domain.model.Cozinha;
 
-public class InclusaoCozinhaMain {
+public class AlteracaoCozinhaMain {
 	
 	public static void main(String[] args) {
 		//a ideia do teste é iniciar a aplicacao por aqui.
@@ -23,14 +23,11 @@ public class InclusaoCozinhaMain {
 		CadastroCozinha cadastroCozinha = applicationContext.getBean(CadastroCozinha.class);
 		
 		//inserir
-		Cozinha cozinha1 = new Cozinha();
-		cozinha1.setNome("Brasileira");
+		Cozinha cozinha = new Cozinha();
+		cozinha.setNome("Brasileira");
+		cozinha.setId(1L);//vai alterar a cozinha de id 1 com nome tailandesa para brasileira
 		
-		Cozinha cozinha2 = new Cozinha();
-		cozinha2.setNome("Japonesa");
-		
-		cozinha1 = cadastroCozinha.salvar(cozinha1);
-		cozinha2 = cadastroCozinha.salvar(cozinha2);
+		cozinha = cadastroCozinha.salvar(cozinha);
 		
 		
 		
@@ -38,8 +35,8 @@ public class InclusaoCozinhaMain {
 		//listar
 		List<Cozinha> lista = cadastroCozinha.listar();
 		
-		for (Cozinha cozinha : lista) {
-			System.out.println(cozinha.getId() + "/"+cozinha.getNome());
+		for (Cozinha cozinhaItem : lista) {
+			System.out.println(cozinhaItem.getId() + "/"+cozinhaItem.getNome());
 		}
 	}
 }

@@ -2273,3 +2273,85 @@ public class CadastroCozinha {
 
 pronto. ao chamarmos o metodo adicionar() ele ira persistir a cozinha e retornar a instancia persistida.
 
+### 3.10. Buscando um objeto pelo id no banco de dados
+buscar um objeto pelo seu id é muito facil no JPA:
+
+	public Cozinha buscar(Long id) {
+		return manager.find(Cozinha.class, id);
+	}
+
+
+### 3.11. Atualizando um objeto no banco de dados
+a atualizacao de um objeto é tambem muito simples.
+
+podemos reaproveitar o metodo adicionar() que criamos nas aulas anteriores e somente alterar o nome dele para persistir();
+
+no exemplo vamos criar uma new Cozinha, e setar os dados dela, inclusive o id.
+
+ao chamar o metodo salvar(), o hibernate, ve que essa instancia da classe nao esta no seu contexto e realiza um select para verificar se ela ja nao existe no banco de dados.
+
+como nesse caso ja existe, ele executa um update, trocando os dados que estao no banco pelos dados passados na instancia.
+
+@Transactional//transacao do spring para alteracao do banco de dados
+	public Cozinha salvar(Cozinha cozinha) {
+		return manager.merge(cozinha);
+	}
+
+e o teste vai ser:
+
+Cozinha cozinha = new Cozinha();
+cozinha.setNome("Brasileira");
+cozinha.setId(1L);//vai alterar a cozinha de id 1 com nome tailandesa para brasileira
+
+cozinha = cadastroCozinha.salvar(cozinha);
+
+pronto. a cozinha de id 1 foi alterada
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
