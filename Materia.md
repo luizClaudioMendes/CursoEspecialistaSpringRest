@@ -2245,4 +2245,31 @@ spring.jpa.show-sql=true
 
 pronto.
 
+### 3.9. Adicionando um objeto no banco de dados
+persisitir um objeto é muito simples usando o JPA.
+
+uma das poucas diferenças é que, para realizar alteracoes no banco de dados, o sql gerado deve ser executado dentro de uma transacao.
+
+para fazer isso no spring, basta que no metodo que realiza a alteracao, anotarmos com @Transactional do pacote do spring. CUIDADO: NAO UTILIZAR A ANOTACAO DE OUTROS PACOTES!
+
+@Component
+public class CadastroCozinha {
+
+	@PersistenceContext //o PersistenceContext é o mesmo que o @Autowired mas que permite algumas configuracoes do entity manager
+	private EntityManager manager;
+	
+	public List<Cozinha> listar () {
+		TypedQuery<Cozinha> query = manager.createQuery("from Cozinha", Cozinha.class); //usando JPQL
+		return query.getResultList();
+	
+	}
+	
+	@Transactional//transacao do spring para alteracao do banco de dados
+	public Cozinha adicionar(Cozinha cozinha) {
+		return manager.merge(cozinha);
+	}
+}
+
+
+pronto. ao chamarmos o metodo adicionar() ele ira persistir a cozinha e retornar a instancia persistida.
 
