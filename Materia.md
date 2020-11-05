@@ -2189,9 +2189,60 @@ insert into cozinha (nome) values ('Indiana');
 
 pronto. agora quando ele recriar as tabelas ele ira inserir em cozinha os dois valores que indicamos no arquivo.
 
+### 3.8. Consultando objetos do banco de dados
+vamos fazer uma consulta de objetos do tipo cozinha.
+
+vamos fazer a consulta usando JPA.
+
+vamos implementar uma classe que ira fazer essa consulta:
+
+@Component
+public class CadastroCozinha {
+
+	@PersistenceContext //o PersistenceContext é o mesmo que o @Autowired mas que permite algumas configuracoes do entity manager
+	private EntityManager manager;
+	
+	public List<Cozinha> listar () {
+		TypedQuery<Cozinha> query = manager.createQuery("from Cozinha", Cozinha.class); //usando JPQL
+		return query.getResultList();
+	
+	}
+}
+
+pronto. a consulta por todas as cozinhas esta pronta.
+
+para testar vamos fazer uma nova classe main, mas que nao ira instanciar uma apllicacao web e sim uma simples aplicacao:
+
+public class ConsultaCozinhaMain {
+	
+	public static void main(String[] args) {
+		//a ideia do teste é iniciar a aplicacao por aqui.
+		// nao inciar uma aplicacao web, mas somente uma applicacao nao web
+		ApplicationContext applicationContext = 
+				new SpringApplicationBuilder(AlgafoodApiApplication.class)
+				.web(WebApplicationType.NONE) //informa que nao é uma aplicacao web
+				.run(args);
+		
+		//inicio dos testes
+		CadastroCozinha cadastroCozinha = applicationContext.getBean(CadastroCozinha.class);
+		List<Cozinha> lista = cadastroCozinha.listar();
+		
+		for (Cozinha cozinha : lista) {
+			System.out.println(cozinha.getNome());
+		}
+	}
+}
 
 
+pronto. as duas cozinhas foram exibidas no console.
 
+mas agente queria ver o sql executado pelo JPA.
+isso nao é recomendado ser feito em produção mas como estamos em desenvolvimento, vamos exibi-la.
 
+no application.properties:
+
+spring.jpa.show-sql=true
+
+pronto.
 
 
