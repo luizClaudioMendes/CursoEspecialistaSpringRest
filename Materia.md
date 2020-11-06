@@ -2421,6 +2421,38 @@ cadastroCozinha.apagar(cozinha);
 com isso conseguimos apagar a cozinha de id 1.
 
 
+### 3.13. Conhecendo o padrão Aggregate do DDD
+vamos conhecer o padrao Aggregate do DDD.
+
+o que é o DDD?
+o DDD é uma abordagem de desenvolvimento de software com foco no dominio, ou seja, no negocio.
+
+o que é o Aggregate?
+o aggregate é um grupo de objetos de dominio que podem ser tratados como uma unica unidade.
+
+https://martinfowler.com/bliki/DDD_Aggregate.html
+"Aggregate is a pattern in Domain-Driven Design. A DDD aggregate is a cluster of domain objects that can be treated as a single unit. An example may be an order and its line-items, these will be separate objects, but it's useful to treat the order (together with its line items) as a single aggregate.
+
+An aggregate will have one of its component objects be the aggregate root. Any references from outside the aggregate should only go to the aggregate root. The root can thus ensure the integrity of the aggregate as a whole."
+
+vamos usar um exemplo do nosso projeto, neste caso o pedido.
+
+imagem 1
+
+o pedido é composto pela entidade pedido, entidade itemPedido e o enum StatusPedido.
+
+tudo isso pode ser tratado como uma unica entidade, a Pedido.
+
+nao podemos ter um itemPedido sem existir um Pedido atrelado.
+
+a entidade mais forte do conjunto é a Aggregate root, neste caso o Pedido.
+
+as referencias fora do agregado devem sempre apontar para o aggregate root.
+
+ou seja, outros objetos do sistema nao deve apontar para o item pedido, e sim para o pedido, que é a aggregate root.
+
+ 
+
 
 
 
