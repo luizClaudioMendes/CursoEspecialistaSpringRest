@@ -2437,7 +2437,7 @@ An aggregate will have one of its component objects be the aggregate root. Any r
 
 vamos usar um exemplo do nosso projeto, neste caso o pedido.
 
-imagem 1
+![](https://github.com/luizClaudioMendes/CursoEspecialistaSpringRest/blob/master/imagens_materia/capitulo_3-13/imagem1.PNG)
 
 o pedido é composto pela entidade pedido, entidade itemPedido e o enum StatusPedido.
 
