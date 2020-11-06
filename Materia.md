@@ -2366,7 +2366,7 @@ Importante notar que entidades desanexadas podem voltar a ser gerenciadas com a 
 
 Veja como fica no diagrama abaixo.
 
-imagem1
+![](https://github.com/luizClaudioMendes/CursoEspecialistaSpringRest/blob/master/imagens_materia/capitulo_3-12/imagem1.PNG)
 
 Diagrama de estados
 
