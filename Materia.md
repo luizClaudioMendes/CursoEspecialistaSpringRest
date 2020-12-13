@@ -2525,7 +2525,7 @@ public class CozinhaRepositoryImpl implements CozinhaRepository{
 }
 
 
-3.15. Conhecendo e usando o Lombok
+### 3.15. Conhecendo e usando o Lombok
 o lombok é uma biblioteca que facilita muito a nossa vida.
 
 o foco é em produtividade e reducao de codigo boiler plate, que sao codigos que sao repetidos frequentemente, como os getter e os setters.
@@ -2685,9 +2685,9 @@ public class Cozinha {
 
 	...
 
-3.16. Desafio: Lombok e repositório de restaurantes
+### 3.16. Desafio: Lombok e repositório de restaurantes
 
-3.17. Mapeando relacionamento com @ManyToOne
+### 3.17. Mapeando relacionamento com @ManyToOne
 como fazer o mapeamentod e muitos para um.
 vamos focar no restaurante e cozinha
 entao um restaurante tem um cozinha, entao muitos restaurantes podem ter a mesma cozinha (many to one)
@@ -2724,8 +2724,34 @@ spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQL57Dialect
 
 pronto. agora ele vai criar as tabelas com chaves estrangeiras, usando o INNODB
 
+### 3.18. A anotação @JoinColumn
+a anotaçao @ManyToOne e outras similares cria de um modo default o nome da coluna no BD.
+mas e se usarmos um banco legado ou se quisermos personalizar o nome da coluna?
 
+para os dados convencionaiso como string ou integer, agente usa a anotaçao 
+@Column.
 
+para este caso, usaremos a anotaçap @JoinColumn e a classe ficará assim:
+
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Entity
+public class Restaurante {
+	
+	@EqualsAndHashCode.Include
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	private String nome;
+	
+	@Column(name = "taxa_frete")
+	private BigDecimal taxaFrete;
+	
+	@ManyToOne
+	@JoinColumn(name = "cozinha_id")
+	private Cozinha cozinha;
+}
 
 
 
