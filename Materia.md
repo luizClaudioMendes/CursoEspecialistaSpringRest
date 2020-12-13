@@ -2838,6 +2838,56 @@ nao existe opçao 100% correta ou 100% incorreta.
 
 o desenvolvedor pragmatico avalia o que é bom para o projeto, vendo os custos e os beneficios de cada problema.
 
+### 4.5. Conhecendo o protocolo HTTP
+o modelo arquitetural rest independe de tecnologia. na verdade, nao é restringido o protocolo a ser utilizado no rest, somente que se deve utilizar um. o mais utilizado é o http.
+
+o http é um protocolo requisicao/resposta. este primeiro ponto ajuda a entender a primeira constraint, de cliente/servidor.
+
+agora vamos mais a fundo para entender o protocolo http.
+
+#### composicao da requisicao
+uma requisicao é formada por:
+
+[METODO] [URI] HTTP/[Versao]
+[Cabecalhos]
+[CORPO/PAYLOAD]
+
+ex:
+POST /produtos HTTP/1.1
+Content-Type: applicaction/json
+Accept: application/json
+{
+	"nome": "Notebook",
+	"preco": 2100.9
+}
+
+* metodos - ou verbos http GET POST PUT DELETE. indicam a acao que queremos que seja executada.
+* URI é um caminho que indica o que queremos no servidor
+* versao - versao do http
+* cabeçalhos - sao informaçoes sobre a requisicao. eles definem nomes de chave/valor que sao utilizados pelo servidor.
+no exemplo temos o content-type que informa que a requisicao esta indo no formato json.
+temos tambem o accept, que informa que o servidor deve obrigatoriamente retornar uma resposta neste formato ou retornar um erro.
+* corpo - corpo da mensagem
+
+#### composicao da resposta
+uma resposta é formada por:
+HTTP/[Versao] [STATUS]
+[Cabecalhos]
+[CORPO]
+
+ex:
+HTTP/1.1 201 Created
+Content-type: application/json
+{
+	"codigo": 331,
+	"nome": "notebook",
+	"preco": 2100.9
+}
+
+* status - indica qual foi o resultado do processamento da requisicao.
+* cabeçalhos - informaçoes sobre a resposta
+* corpo - conteudo da resposta. opcional. pode retornar ou nao.
+
 
 
 
