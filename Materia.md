@@ -2896,6 +2896,10 @@ tambem foi mostrado a instalaçao do GnuTLS para conexoes com https.
 foi exibido a api rest do github.
 ....
 
+### 4.7. Instalando e testando o Postman
+...
+ensinado como instalar e utilizar o software postman
+...
 
 
 
