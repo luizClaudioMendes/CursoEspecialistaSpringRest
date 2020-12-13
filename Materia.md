@@ -2811,6 +2811,48 @@ uma rest api é um sistema que segue essas melhores praticas do roy fielding.
 * independencia de linguagem - os servidores podem ser escritos em qualquer linguagem, podendo interagir entre si e outros servidores externos.
 * mercado - empresas pequenas e grandes cada vez mais contratam serviços de outras empresas onde o REST ajuda na comunicacao entre eles. e tambem cada vez mais existem mais dispositivos como celulares, tvs, etc solicitando e enviando dados para as api´s.
 
+### 4.2. Conhecendo as constraints do REST
+o rest tem o intuito de formalizar uma serie de constraints, que sao as melhores praticas.
+
+#### constraints:
+* cliente-servidor. uma aplicacao REST necessita de um cliente para consumir os dados. eles sao independentes, e tanto um quanto o outro podem ser substituidos sem interferir no funcionamento dos mesmos, desde que a interface entre eles permaneça inalterada.
+* stateless - o servidor nao deve possuir estado, ou seja, nao deve manter sessoes entre requisicoes. cada requisicao é independente e ela mantem o seu estado e no termino deve ser apagado.
+* cache - a api pode fazer cache para reduzir o tempo de resposta. podemos ter tambem servidores intermediarios entre o cliente e o servidor para manter esse cache.
+* interface uniforme - um conjunto de operaçoes bem definidas do sistema. uma vez definida a interface voce deve manter ela em todo o sistema. essa constraint simplifica e desacopla a arquitetura que permite que tanto o cliente quanto o servidor possam evoluir independemente. a resposta deve tambem ser padronizada e os verbos http devem ser utilizados corretamente.
+* sistema em camadas - possibilidade de entre cliente e servidor existirem outros servidores, como segurança, cache, balanceadores, etc. estas camadas nao devem afetar a requisicao nem a resposta
+* codigo sob demanda - opcional e muito pouco usada. o servidor pode enviar como resposta algum codigo que pode ser executado no cliente.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
