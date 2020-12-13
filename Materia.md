@@ -2525,12 +2525,165 @@ public class CozinhaRepositoryImpl implements CozinhaRepository{
 }
 
 
+3.15. Conhecendo e usando o Lombok
+o lombok é uma biblioteca que facilita muito a nossa vida.
 
+o foco é em produtividade e reducao de codigo boiler plate, que sao codigos que sao repetidos frequentemente, como os getter e os setters.
 
+para adicionao o lombok no spring, basta clicar com o botao direito no projeto
+e depois em spring >> edit starters
 
+depois basta pesquisar por lombok
 
+sera adicionado ao pom a dependencia do lombok
 
+ <dependency>
+	<groupId>org.projectlombok</groupId>
+	<artifactId>lombok</artifactId>
+</dependency>
 
+mas so com isso nao funciona. precisamos adicionar o plugin do lombok na IDE, de forma a ensinar a IDE a trabalhar com o lombok.
+
+para isso vamos no site do lombok https://projectlombok.org/
+
+e em dowloads, baixamos o lombok. esse arquivos .jar que baixamos é o instalador do lombok.
+
+pronto.
+
+como usar?
+
+nas classes de entidades, basta usarmos as anotaçoes do lombok.
+
+vamos usar como exemplo a classe Cozinha
+ela esta assim:
+
+@Table(name = "cozinha")
+@Entity
+public class Cozinha {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@Column(name = "nome")
+	private String nome;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Cozinha other = (Cozinha) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+}
+
+e vai ficar assim, após retirarmos os getters e setters:
+
+@Getter
+@Setter
+@Table(name = "cozinha")
+@Entity
+public class Cozinha {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@Column(name = "nome")//se usar assim o JPA busca pelo nome da coluna
+	private String nome;
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Cozinha other = (Cozinha) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+}
+
+podemos tambem fazer a geraçao do equals e hash code, basta acrescentar a anotacao @EqualsAndHashCode. existe uma configuraçao legal do equals e hashcode que veremos mais adiante.
+
+para voce ver as funcionalidades que existem no lombok, basta voce dar uma olhada no site.
+
+existe uma bem interessante, que é a @Data
+
+@Data
+All together now: A shortcut for @ToString, @EqualsAndHashCode, @Getter on all fields, and @Setter on all non-final fields, and @RequiredArgsConstructor!
+
+como ela diz é uma atalho para @ToString, @EqualsAndHashCode, @Getter and @Setter, e @RequiredArgsConstructor
+
+@Data
+@Table(name = "cozinha")
+@Entity
+public class Cozinha {
+	...
+
+bom o problema é que agora ele gerou um equals e hashcode com todos os atributos e nao é o que queremos.
+
+entao vamos, mesmo com o @Data, vamos acrescentar o @EqualsAndHashCode para podermos configurar.
+
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Table(name = "cozinha")
+@Entity
+public class Cozinha {
+
+	@EqualsAndHashCode.Include //informa que o equals e hashcode deve incluir esta propriedade
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	...
 
 
 
