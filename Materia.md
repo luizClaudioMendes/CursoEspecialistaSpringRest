@@ -2829,7 +2829,14 @@ restful é uma api desenvolvida com todas as constraints.
 
 na pratica, poucas api´s sao restful porque viola alguma constraint.
 
+### 4.4. Desenvolvedores de REST APIs puristas e pragmáticos
+existem desenvolvedores puristas, que defendem que o rest api devem seguir fielmente os principios rest sem exceçoes.
+ja os pragmaticos defendem uma abordagem mais pratica. eles desenvolvem rest api seguindo as constraints tambem, mas estao abertos a excecoes.
+se seguir uma constraint complica demais a aplicacao e nao traz ganho para a aplicaco, essa constraint deve ser ignorada.
 
+nao existe opçao 100% correta ou 100% incorreta.
+
+o desenvolvedor pragmatico avalia o que é bom para o projeto, vendo os custos e os beneficios de cada problema.
 
 
 
