@@ -2822,6 +2822,13 @@ o rest tem o intuito de formalizar uma serie de constraints, que sao as melhores
 * sistema em camadas - possibilidade de entre cliente e servidor existirem outros servidores, como segurança, cache, balanceadores, etc. estas camadas nao devem afetar a requisicao nem a resposta
 * codigo sob demanda - opcional e muito pouco usada. o servidor pode enviar como resposta algum codigo que pode ser executado no cliente.
 
+### 4.3. Diferença entre REST e RESTful
+rest e restful sao dois conceitos.
+rest é um estilo arquitetural que possui as constraints.
+restful é uma api desenvolvida com todas as constraints. 
+
+na pratica, poucas api´s sao restful porque viola alguma constraint.
+
 
 
 
