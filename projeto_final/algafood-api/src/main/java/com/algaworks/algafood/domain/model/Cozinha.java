@@ -23,7 +23,7 @@ public class Cozinha {
 
 	//se deixar sem anotacao o JPA vai buscar na tabela a coluna com o nome do atributo
 	//se usar @Column somente, ocorre o mesmo
-	@Column(name = "nome")//se usar assim o JPA busca pelo nome da coluna
+	@Column(name = "nome", nullable = false)//se usar assim o JPA busca pelo nome da coluna
 	private String nome;
 
 	

@@ -2754,7 +2754,40 @@ public class Restaurante {
 }
 
 
+### 3.19. Propriedade nullable de @Column e @JoinColumn
+quando utilizamos a criacao automatica de tabelas, que nao deve ser utilizado em produçao, podemos necessitar de que seja inserido na tabela em si, a validacao de nao aceitaçao de nulos. por default, a criacao automatica da tabela permite que as colunas sejam nulas, exceto a coluna do id.
 
+entao, em @Column e @JoinColumn basta adicionarmos a propriedade
+
+nullable = false
+
+para que na criacao automatica ela seja criada como NOT NULL.
+
+OBS: as anotacoes @Column e @JoinColumn sao do JPA. com isso, essas propriedades sao aplicadas ao BD e nao ao codigo. se nao estiver sendo utilizada criacao automatica essas propriedades serao mais informativas que praticas.
+
+a validacao pelo codigo de permissao de null ou nao serao vistas no capitulo de validadores.
+
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Entity
+public class Restaurante {
+	
+	@EqualsAndHashCode.Include
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	@Column(nullable = false) //nullable somente aplicado à criacao de tabelas automaticas
+	private String nome;
+	
+	@Column(name = "taxa_frete", nullable = false)
+	private BigDecimal taxaFrete;
+	
+	@ManyToOne
+	@JoinColumn(name = "cozinha_id", nullable = false)
+	private Cozinha cozinha;
+
+}
 
 
 
