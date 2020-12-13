@@ -6,11 +6,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 
+@Component
 public class CozinhaRepositoryImpl implements CozinhaRepository{
 	
 	@PersistenceContext //o PersistenceContext é o mesmo que o @Autowired mas que permite algumas configuracoes do entity manager
@@ -20,7 +22,6 @@ public class CozinhaRepositoryImpl implements CozinhaRepository{
 	public List<Cozinha> listar () {
 		TypedQuery<Cozinha> query = manager.createQuery("from Cozinha", Cozinha.class); //usando JPQL
 		return query.getResultList();
-	
 	}
 	
 	@Override
