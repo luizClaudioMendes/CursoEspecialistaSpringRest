@@ -2888,6 +2888,14 @@ Content-type: application/json
 * cabeçalhos - informaçoes sobre a resposta
 * corpo - conteudo da resposta. opcional. pode retornar ou nao.
 
+### 4.6. Usando o protocolo HTTP
+
+...
+nesta aula foi ensinado o uso do telnet para conexao com o servidor.
+tambem foi mostrado a instalaçao do GnuTLS para conexoes com https.
+foi exibido a api rest do github.
+....
+
 
 
 
