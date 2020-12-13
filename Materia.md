@@ -2452,7 +2452,77 @@ as referencias fora do agregado devem sempre apontar para o aggregate root.
 ou seja, outros objetos do sistema nao deve apontar para o item pedido, e sim para o pedido, que é a aggregate root.
 
  
+### 3.14. Conhecendo e implementando o padrão Repository
+o padrao repository é um padrao do DDD que adiciona uma camada de abstraçao na persistencia de dados.
 
+o repository nao é vinculado a tabela e sim ao agregado (agreggate). entao nao teremos um repository de pedido e outro repository para item pedido por exemplo.
+
+o repository de pedido ficara encarregado de persistir todos os dados relacionado ao pedido.
+
+
+CozinhaRepository
+package com.algaworks.algafood.domain.repository;
+
+import java.util.List;
+
+import com.algaworks.algafood.domain.model.Cozinha;
+
+public interface CozinhaRepository {
+	//um repository representa uma coleçao, neste caso de cozinhas.
+	// a interface do repositorio faz parte do dominio, nao tem mecanismos de persistencia, ou seja se é em BD ou arquivo, etc
+	
+	List<Cozinha> listar();
+	Cozinha buscar(Long id);
+	Cozinha salvar(Cozinha cozinha);
+	void remover (Cozinha cozinha);
+
+}
+
+
+CozinhaRepositoryImpl
+package com.algaworks.algafood.infrastructure.repository;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+
+import org.springframework.transaction.annotation.Transactional;
+
+import com.algaworks.algafood.domain.model.Cozinha;
+import com.algaworks.algafood.domain.repository.CozinhaRepository;
+
+public class CozinhaRepositoryImpl implements CozinhaRepository{
+	
+	@PersistenceContext //o PersistenceContext é o mesmo que o @Autowired mas que permite algumas configuracoes do entity manager
+	private EntityManager manager;
+	
+	@Override
+	public List<Cozinha> listar () {
+		TypedQuery<Cozinha> query = manager.createQuery("from Cozinha", Cozinha.class); //usando JPQL
+		return query.getResultList();
+	
+	}
+	
+	@Override
+	public Cozinha buscar(Long id) {
+		return manager.find(Cozinha.class, id);
+	}
+	
+	@Transactional//transacao do spring para alteracao do banco de dados
+	@Override
+	public Cozinha salvar(Cozinha cozinha) {
+		return manager.merge(cozinha);
+	}
+	
+	@Transactional
+	@Override
+	public void remover(Cozinha cozinha) {
+		cozinha = buscar(cozinha.getId());
+		manager.remove(cozinha);
+	}
+}
 
 
 
