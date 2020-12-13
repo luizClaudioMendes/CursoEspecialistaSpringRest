@@ -2792,6 +2792,25 @@ public class Restaurante {
 
 ### 3.20. Desafio: mapeando entidades
 
+### 4.1. O que é REST?
+REST vem de REpresentational State Transfer, nao sendo uma tecnologia e sim um modelo arquitetuiral. ele nao é uma tecnologia, pois nao pode ser baixada em um site. 
+
+ele define a forma de comunicacao entre componentes de software na web, independente de linguagem utilizada.
+
+surgiu no inicio dos anos 2000 na tese de PHD de um cientista chamado Roy Fielding.
+
+o intiuito era a formaçao de melhores praticas e regras para desenvovlvimento de web api.
+
+essas melhores praticas sao chamadas de constraints.
+
+uma rest api é um sistema que segue essas melhores praticas do roy fielding.
+
+#### porque usar rest?
+* separacao entre cliente e servidor. desta forma temos uma maior flexibilidade e portabilidade. o sistema cliente pode evoluir independente do sistema servidor, podendo ate consumir de diferentes servidores
+* escalabilidade - é muito facil escalar os sevidores, se um nao estiver dando conta de atender as necessidades dos clientes, basta subir outra instancia, sem necessidade de ficar transferindo sessoes entre eles.
+* independencia de linguagem - os servidores podem ser escritos em qualquer linguagem, podendo interagir entre si e outros servidores externos.
+* mercado - empresas pequenas e grandes cada vez mais contratam serviços de outras empresas onde o REST ajuda na comunicacao entre eles. e tambem cada vez mais existem mais dispositivos como celulares, tvs, etc solicitando e enviando dados para as api´s.
+
 
 
 
