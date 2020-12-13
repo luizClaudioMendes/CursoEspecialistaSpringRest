@@ -2687,6 +2687,43 @@ public class Cozinha {
 
 3.16. Desafio: Lombok e repositório de restaurantes
 
+3.17. Mapeando relacionamento com @ManyToOne
+como fazer o mapeamentod e muitos para um.
+vamos focar no restaurante e cozinha
+entao um restaurante tem um cozinha, entao muitos restaurantes podem ter a mesma cozinha (many to one)
+
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Entity
+public class Restaurante {
+	
+	@EqualsAndHashCode.Include
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	private String nome;
+	
+	@Column(name = "taxa_frete")
+	private BigDecimal taxaFrete;
+	
+	@ManyToOne
+	private Cozinha cozinha;
+
+}
+
+agora, um problema que temos neste momento é que nao especificamos o dialeto do banco para a criacao automatica das tabelas. com isso o hibernate usa o dialeto MyISAM, que nao suporta a chave estrangeira.
+
+precisamos de usar o dialeto INNODB.
+
+como estamos usando a criacao automatica, vamos passar essa instruçao para o spring, no application.properties
+
+spring.jpa.properties.hibernate.dialect = nome_completo_classe_do_dialeto
+
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQL57Dialect
+
+pronto. agora ele vai criar as tabelas com chaves estrangeiras, usando o INNODB
+
 
 
 
