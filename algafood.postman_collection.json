@@ -90,6 +90,33 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Cozinhas - criar",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"marciana\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/cozinhas",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cozinhas"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"protocolProfileBehavior": {}

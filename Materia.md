@@ -3588,14 +3588,53 @@ nesta caso, tem conteudo, uma lista vazia. logo o 204 nao se aplica.
 o correto seria deixar o status 200 pois a requisicao foi OK a resposta foi uma lista vazia.
 
 
+### 4.23. Modelando e implementando a inclusão de recursos com POST
+uma modelagem da endpoint de criacao de uma nova cozinha.
+
+seria algo mais ou menos assim:
+POST /cozinhas HTTP/1.1
+Content-Type: application/json
+{
+	"nome": "marciana"
+}
+
+ou seja, queremos adicionar um item numa coleçao. entao fazemos um post na coleçao /cozinhas.
+
+@PostMapping
+public void adicionar (@RequestBody Cozinha cozinha) {
+	cozinhaRepository.salvar(cozinha);
+}
+
+como agente vai receber um POST, nao podemos mais usar o @GetMapping.
+vamos receber um @PostMapping.
+
+o parametro cozinha deve ser anotado com @RequestBody.
+isso esta falando que, o servidor deve pegar o payload da requisicao e fazer um binding com a classe cozinha.
+
+pronto. deste jeito ja da pra funcionar..... mais ainda nao esta pronto
+
+a api retornou codigo 200 - ok, mas esse codigo nao é o adequado. esta tudo ok, a cozinha foi persistida mas o codigo retornado esta incorreto.
 
 
+@PostMapping
+@ResponseStatus(HttpStatus.CREATED)
+public void adicionar (@RequestBody Cozinha cozinha) {
+	cozinhaRepository.salvar(cozinha);
+}
 
+pronto. agora retornara o status 201 - created.....
 
+mas ainda nao esta certo.
 
+sempre que salvamos um objeto, é uma boa pratica retornar a representacao do que agente acabou de criar, junto com o id novo.
 
+@PostMapping
+@ResponseStatus(HttpStatus.CREATED)
+public Cozinha adicionar (@RequestBody Cozinha cozinha) {
+	return cozinhaRepository.salvar(cozinha);
+}
 
-
+pronto. agora esta tudo ok.
 
 
 
