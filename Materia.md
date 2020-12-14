@@ -2901,6 +2901,18 @@ foi exibido a api rest do github.
 ensinado como instalar e utilizar o software postman
 ...
 
+### 4.8. Entendendo o que são Recursos REST
+recursos do rest ou resources do rest.
+um recurso é qualquer coisa exposta na web. um produto, uma pagina, um processo de negocio, etc.
+é algo que tem importancia suficiente para ter relevancia no software.
+ex. catalogo de produto, nota fiscal, um produto
+
+a forma de um cliente interagir com seus rest api´s é atraves dos seus resources.
+
+um unico produto é um recurso, um singleton resource.
+
+uma coleçao de produtos é um recurso, uma collection resource, que pode ter de zero a infinitos itens.
+
 
 
 
