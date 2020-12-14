@@ -3139,8 +3139,36 @@ podemos ter dois metodos semelhantes retornando tipos diferentes.
 ex. temos o listar1 e o listar 2. o listar um retorna o JSON e o listar2 retorna o XML.
 dependendo do que o metodo produz, ele é chamado de acordo com a requisicao.
 
+### 4.14. Consultando Singleton Resource com GET e @PathVariable
+agora vamos implementar o buscar por id ou seja um SINGLETON RESOURCE.
 
+a ideia é que na URI passamos o id, por exemplo /cozinhas/{id_cozinha}
 
+se executarmos agora será retornado um erro 404 NOT FOUND porque esse mapping nao existe.
+
+@GetMapping("/{cozinhaId}") //o cozinhaId será concatenado a URI /cozinhas. tem o nome de path variable e pode ter qualquer nome
+public Cozinha buscar(Long id) {
+	return cozinhaRepository.buscar(id);
+}
+
+somente desta forma nao irá funcionar, pois o id no metodo nao tera nenhum valor.
+é necessario fazer o binding entre a path variable e o parametro do metodo.
+
+precisamos especificar o binding e para isso usamos a anotacao @PathVariable("cozinhaId")
+
+@GetMapping("/{cozinhaId}") 
+public Cozinha buscar(@PathVariable("cozinhaId") Long id) {
+	return cozinhaRepository.buscar(id);
+}
+
+pronto agora funciona. sera retornado somente um objeto. ou seja um SINGLETON RESOURCE
+
+podemos simplificar mais o codigo e retirar da anotacao @PathVariable o nome e colocar o nome do parametro como o nome especificado no @GetMapping
+
+@GetMapping("/{cozinhaId}") 
+public Cozinha buscar(@PathVariable Long cozinhaId) {
+	return cozinhaRepository.buscar(cozinhaId);
+}
 
 
 

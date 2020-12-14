@@ -24,6 +24,25 @@
 			"response": []
 		},
 		{
+			"name": "Cozinhas - buscar",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/cozinhas/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cozinhas",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Estados - listar",
 			"request": {
 				"method": "GET",
