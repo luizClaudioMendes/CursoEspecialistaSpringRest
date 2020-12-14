@@ -3171,18 +3171,103 @@ public Cozinha buscar(@PathVariable Long cozinhaId) {
 }
 
 
+### 4.15. Customizando as representações XML e JSON com @JsonIgnore, @JsonProperty e @JsonRootName
 
+as classes persistidas sao classes de dominio, ou seja, sao classes de negocio que representam as entidades da aplicacao.
 
+mas tambem usamos elas como classes de modelos de representacao de recursos olhando na perspectiva de uma rest api, porque as controllers as enviam como resposta.
 
+elas tem propriedades, que sao serializadas pelo jackson e enviadas para o cliente, no formato da representacao que ele esta solicitando.
 
+existe uma discursao sobre se essas classes deveriam tambem ser usadas como modelo de representacao de recursos ou somente de modelo de dominio.
 
+as vezes é necessario customizar a representacao para o cliente de uma forma diferente  da classe de modelo de dominio.
 
+vamos usar como exemplo a classe Cozinha.
 
+#### @JsonProperty
 
+imagine que o cliente esta esperando uma classe cozinha mas que a propriedade nome no cliente se chama titulo.
 
+nao queremos alterar a nossa classe de dominio entao precisamos customizar somente a forma como essa classe vai ser enviada na resposta.
 
+sem alteracao esta:
 
+@Column(name = "nome", nullable = false)
+private String nome;
 
+e o JSON retornado é:
+{
+    "id": 1,
+    "nome": "Brasileira"
+}
+
+para alterarmos isso usamos a anotacao @JsonProperty
+
+@JsonProperty("titulo")
+@Column(name = "nome", nullable = false)//se usar assim o JPA busca pelo nome da coluna
+private String nome;
+
+e obtemos como resposta:
+{
+    "id": 1,
+    "titulo": "Brasileira"
+}
+
+ou seja, caso seja necessario alterar o nome da propriedade para a resposta da requisicao, SEM ALTERAR o nome da propriedade no modelo podemos usar a anotacao 
+
+@JsonProperty("NOME_PROPRIEDADE_NA_RESPOSTA")
+
+#### @JsonIgnore
+pode existir tambem casos em que nao queremos que uma propriedade do modelo seja retornada na representacao. nesse caso usamos a anotacao @JsonIgnore
+
+sem alteracao esta:
+
+@Column(name = "nome", nullable = false)
+private String nome;
+
+e o JSON retornado é:
+{
+    "id": 1,
+    "nome": "Brasileira"
+}
+
+para alterarmos isso usamos a anotacao @JsonIgnore
+@JsonIgnore
+@Column(name = "nome", nullable = false)
+private String nome;
+
+e obtemos como resposta:
+{
+    "id": 1
+}
+
+#### @JsonRootName
+se solicitarmos ao servidor que nos envie em formato xml ele retorna:
+
+<Cozinha>
+    <id>1</id>
+    <nome>Brasileira</nome>
+</Cozinha>
+
+imagine que queremos alterar o nome do objeto em XML (essa anotacao somente funciona em respostas em XML).
+
+exemplo, nao queremos <Cozinha> e sim que retorne <cozinha> com letra minuscula.
+
+usamos a anotacao @JsonRootName na classe
+@JsonRootName("cozinha")
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Table(name = "cozinha")//por padrao o JPA usa o nome da classe como nome da tabela. para setar basta usar @Table(name = NOME_TABELA)
+@Entity//anotacao do JPA e informa que esta classe representa uma entidade no banco de dados
+public class Cozinha {
+...
+
+e temos como resposta:
+<cozinha>
+    <id>1</id>
+    <nome>Brasileira</nome>
+</cozinha>
 
 
 

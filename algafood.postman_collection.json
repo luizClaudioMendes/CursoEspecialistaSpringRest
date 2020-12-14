@@ -27,7 +27,13 @@
 			"name": "Cozinhas - buscar",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/xml",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "localhost:8080/cozinhas/1",
 					"host": [
@@ -37,6 +43,13 @@
 					"path": [
 						"cozinhas",
 						"1"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
 					]
 				}
 			},
