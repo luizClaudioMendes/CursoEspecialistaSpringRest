@@ -3465,12 +3465,62 @@ public Cozinha buscar(@PathVariable("cozinhaId") Long id) {
 
 agora quando executamos a requisicao é retornado o codigo 201 created
 
+### 4.20. Manipulando a resposta HTTP com ResponseEntity
+entao agora vamos fazer um exercicio.
 
+nao é nossa intençao deixar o codigo desta forma mas vamos utilizar um metodo como exemplo para podermos exibir como podemos alterar programaticamente o codigo http da resposta de um metodo.
 
+vamos pegar como exemplo o metodo buscar da CozinhaController
 
+hoje ele esta assim:
 
+@GetMapping("/{cozinhaId}") 
+public Cozinha buscar(@PathVariable("cozinhaId") Long id) {
+	return cozinhaRepository.buscar(id);
+}
 
+a classe Cozinha, que é uma classe de dominio mas estamos usando ela tambem como modelo de representacao de recurso.
 
+o jackson vai serializar o objeto em JSON para a resposta.
+
+entao, para podermos ter um controle mais fino da resposta vamos alterar esse metodo.
+
+para fazermos isso, devemos alterar a resposta para uma instancia da classe ResponseEntity:
+
+@GetMapping("/{cozinhaId}") 
+public ResponseEntity<Cozinha> buscar(@PathVariable("cozinhaId") Long id) {
+	Cozinha cozinha = cozinhaRepository.buscar(id);
+	
+	return ResponseEntity.status(HttpStatus.OK).body(cozinha);
+}
+
+entao explicando:
+o ResponseEntity tem um metodo status que tem um metodo body que controi o payload.
+
+com essa alteracao, nao ha nenhuma diferença na resposta, pois replicamos o comportamento padrao do spring.
+
+se quisermos um retorno sem corpo:
+return ResponseEntity.status(HttpStatus.OK).build();
+
+jeito mais facil de replicar o comportamento padrao:
+return ResponseEntity.ok(cozinha);
+
+jeito mais facil de enviarmos um retorno sem payload:
+return ResponseEntity.ok().build();
+
+retornar um response entity com status found (302) e um redirecionamento em um location no headers:
+
+HttpHeaders headers = new HttpHeaders();
+headers.add(HttpHeaders.LOCATION, "http://localhost:8080/cozinhas");
+
+return ResponseEntity
+		.status(HttpStatus.FOUND)
+		.headers(headers)
+		.build();
+
+desta forma é retornado um 302 sem corpo e no header é colocado um location para o redirecionamento.
+
+o intuito desta aula é somente exibir a possibilidade. o codigo nao deve permanecer assim.
 
 
 

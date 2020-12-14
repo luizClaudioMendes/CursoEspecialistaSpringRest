@@ -3,8 +3,10 @@ package com.algaworks.algafood.api.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,5 +41,26 @@ public class CozinhaController {
 	public Cozinha buscar(@PathVariable("cozinhaId") Long id) {
 		return cozinhaRepository.buscar(id);
 	}
+	
+//	//codigo para exibicao do controle fino da resposta --- ver aula 4.20. Manipulando a resposta HTTP com ResponseEntity
+//	@GetMapping("/{cozinhaId}") 
+//	public ResponseEntity<Cozinha> buscar(@PathVariable("cozinhaId") Long id) {
+//		Cozinha cozinha = cozinhaRepository.buscar(id);
+//		
+////		return ResponseEntity.status(HttpStatus.OK).body(cozinha);//replica do comportamento padrao
+////		return ResponseEntity.status(HttpStatus.OK).build();// retorno sem corpo
+//
+////		return ResponseEntity.ok(cozinha);// jeito mais simples para usar o response entity replicando o comportamento padrao
+////		return ResponseEntity.ok().build();// jeito mais simples para retornar codigo 200 sem payload
+//		
+//		HttpHeaders headers = new HttpHeaders();
+//		headers.add(HttpHeaders.LOCATION, "http://localhost:8080/cozinhas");
+//		
+//		return ResponseEntity
+//				.status(HttpStatus.FOUND)
+//				.headers(headers)
+//				.build();
+//		
+//	}
 
 }
