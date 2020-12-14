@@ -9,7 +9,19 @@
 			"name": "Cozinhas - listar",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/xml",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					}
+				],
 				"url": {
 					"raw": "localhost:8080/cozinhas",
 					"host": [

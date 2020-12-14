@@ -3270,15 +3270,123 @@ e temos como resposta:
 </cozinha>
 
 
+### 4.16. Customizando a representação em XML com Wrapper e anotações do Jackson
+quando temos uma representacao no formato XML, na listagem é retornado o seguinte:
+
+<List>
+    <item>
+        <id>1</id>
+        <nome>Brasileira</nome>
+    </item>
+    <item>
+        <id>2</id>
+        <nome>Americana</nome>
+    </item>
+</List>
+
+caso desejamos customizar o <List> e o <item> precisamos criar uma classe wrapper para o XML.
+
+lembrando que isto somente funciona para XML!
+
+quando buscamos somente um objeto ja customizamos com o @JasonRootName
+
+<cozinha>
+    <id>1</id>
+    <nome>Brasileira</nome>
+</cozinha>
+
+entao vamos customizar a listagem de cozinhas para formato XML
+
+vamos criar uma nova classe que vai representar essa lista.
+@Data
+public class CozinhasXmlWrapper {
+
+	@NonNull
+	private List<Cozinha> cozinhas;
+}
+
+só isso.
+
+agora no controller, quando a requisicao for para XML, vamos criar um novo metodo para responder, usando o @GetMapping
+
+@GetMapping(produces = MediaType.APPLICATION_XML_VALUE) 
+public CozinhasXmlWrapper listarXml() {
+	return new CozinhasXmlWrapper(cozinhaRepository.listar());
+}
+
+pronto. agora quando a requisicao somente aceitar XML ela entrará neste metodo e retornara nosso wrapper:
+
+<CozinhasXmlWrapper>
+    <cozinhas>
+        <cozinhas>
+            <id>1</id>
+            <nome>Brasileira</nome>
+        </cozinhas>
+        <cozinhas>
+            <id>2</id>
+            <nome>Americana</nome>
+        </cozinhas>
+    </cozinhas>
+</CozinhasXmlWrapper>
+
+legal! ja conseguimos algum avanço. mas ainda nao é o que nos queremos
+
+* <CozinhasXmlWrapper> isto esta errado.
+* <cozinhas> isto como lista esta errado. nao precisamos disso.
+* <cozinhas> nos itens tambem esta errado. deveria ser no singular.
+
+entao vamos continuar.
+vamos corrigir o <CozinhasXmlWrapper>
+
+adicionamos na classe CozinhasXmlWrapper a anotacao @JacksonXmlRootElement(localName = "cozinhas")
+
+@JacksonXmlRootElement(localName = "cozinhas") //poderia ser tambem o @JsonRootElement
+@Data
+public class CozinhasXmlWrapper {
+...
+
+pronto. agora vamos resolver o segundo problema.
+* <cozinhas> isto como lista esta errado. nao precisamos disso.
+
+ela esta refletindo a classe List no wrapper.
+
+para corrigir usamos @JacksonXmlElementWrapper(useWrapping = false)
+
+@JacksonXmlElementWrapper(useWrapping = false)
+@NonNull
+private List<Cozinha> cozinhas;
+
+o que estamos dizendo é que nao queremos que seja embrulhada na representacao xml a classe List, logo ela desaparecerá.
+
+aproveitamos tambem e corrigimos o 3 problema:
+* <cozinhas> nos itens tambem esta errado. deveria ser no singular.
+
+usamos tambem uma outra anotacao:
+
+@JacksonXmlProperty(localName = "cozinha")
+
+	@JacksonXmlProperty(localName = "cozinha") //poderia ser tambem o @JasonProperty
+	@JacksonXmlElementWrapper(useWrapping = false)
+	@NonNull
+	private List<Cozinha> cozinhas;
+
+com essa anotacao, fazemos com que o nome dos itens fique "cozinha" no xml:
+
+<cozinhas>
+    <cozinha>
+        <id>1</id>
+        <nome>Brasileira</nome>
+    </cozinha>
+    <cozinha>
+        <id>2</id>
+        <nome>Americana</nome>
+    </cozinha>
+</cozinhas>
 
 
+estas coisas somente sao necessarias se pretendermos dar suporte a XML e tambem se quisermos configurar a resposta.
 
-
-
-
-
-
-
+nada disso é necessario para JSON.
 
 
 
