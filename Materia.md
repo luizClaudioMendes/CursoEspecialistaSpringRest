@@ -3568,6 +3568,25 @@ pronto.
 agora quando for passado um id inexistente, será retornado 404.
 
 
+### 4.22. Status HTTP para collection resource vazia: qual usar?
+
+qual status retornar quando uma resposta é uma lista vazia?
+
+retornar uma lista vazia e o status 200 esta errado?
+
+podemos usar outros?
+
+podemos retornar um 404?
+não. quando pesquisamos por um id, por exemplo, a URI seria ex: /cozinhas/200
+essa URI esta esta errada. por isso é correto retornar 404. 
+na lista isso nao ocorre. a URI /cozinhas esta correta, logo nao justifica o erro 404.
+
+podemos retorar um 204?
+nao. o 204 é utilizado para quando a acao nao tem conteudo, como por exemplo um delete.
+nesta caso, tem conteudo, uma lista vazia. logo o 204 nao se aplica.
+
+o correto seria deixar o status 200 pois a requisicao foi OK a resposta foi uma lista vazia.
+
 
 
 
