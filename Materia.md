@@ -3066,7 +3066,78 @@ outro formato muito conhecido é o xml.
 
 essa negociacao de formato de representacao de um mesmo recurso é o que chamamos de content negotiation, porque o cliente esta de certa forma negociando com o servidor o formato da resposta.
 
+### 4.13. Implementando content negotiation para retornar JSON ou XML
+como implementar o content negotiation na aplicacao para que seja retornado um JSON ou XML
 
+para informar o servidor do formato da resposta que queremos, na requisicao enviamos o cabecalho Accept com o formato pretendido.
+
+o springboot ja vem configurado como padrao o retorno das requisicoes em JSON, por isso nao foi necessario especificar nem na classe nem no metodo o tipo de retorno produzido.
+
+para alterar essa requisicao basta incluir no cabecalho o Accept: application/xml por exemplo.
+
+do jeito que o projeto esta agora, se passarmos uma requisicao com o Accept em formato xml por exemplo ele dará erro na resposta (406 NOT ACCEPTABLE).
+
+isso indica que o servidor rejeitou a requisicao pois ele nao esta preparado para responder em XML.
+
+#### adicionar o suporte XML nas respostas das requisicoes
+o suporte a JSON já esta habilitado por default pelo springboot.
+
+para adicionar o suporte a respostas XML em todo o sistema, basta somente inserir esta dependencia no POM.xml.
+
+é necessario inseri-la manualmente, pois o gerenciador de conteudo do spring nao possui ela.
+
+ <dependency>
+	<groupId>com.fasterxml.jackson.dataformat</groupId>
+	<artifactId>jackson-dataformat-xml</artifactId>
+</dependency>
+
+essa dependencia é uma extensao do jackson para o formato xml.
+
+o springboot trabalha com a biblioteca jackson para fazer a serializacao de objetos java para um formato especifico.
+
+bom agora TODO o nosso sistema esta com suporte a respostas XML e tambem em JSON.
+
+#### especificar no metodo o tipo do retorno
+agora nos controllers, podemos especificar o que um metodo ou classe retornam como resposta.
+
+imaginemos que agora o nosso sistema responde em JSON e XML. mas existe um metodo especifico que queremos que SOMENTE RETORNE XML.
+
+a anotacao @GetMapping tem uma propriedade que permite isso:
+
+//	@GetMapping // retorna o tipo configurado no sistema 
+//	@GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}) // retorna o tipo JSON ou XML mesmo que a applicacao permita outros tipos
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE) // retorna o tipo JSON mesmo que a applicacao permita outros tipos
+	public List<Estado> listar() {
+		return estadoRepository.listar();
+	}
+
+
+podemos tambem colocar no request mapping da classe:
+@RestController
+@RequestMapping(value = "/estados", produces = MediaType.APPLICATION_JSON_VALUE)
+public class EstadoController {
+	
+	@Autowired
+	private EstadoRepository estadoRepository;
+	
+//	@GetMapping // retorna o tipo configurado no sistema 
+//	@GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}) // retorna o tipo JSON ou XML mesmo que a applicacao permita outros tipos
+//	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE) // retorna o tipo JSON mesmo que a applicacao permita outros tipos
+	public List<Estado> listar() {
+		return estadoRepository.listar();
+	}
+
+}
+
+desta forma estamos especificando para toda a classe o tipo de retorno.
+
+Ok. vamos voltar ao que estava antes.
+
+blz.
+
+podemos ter dois metodos semelhantes retornando tipos diferentes.
+ex. temos o listar1 e o listar 2. o listar um retorna o JSON e o listar2 retorna o XML.
+dependendo do que o metodo produz, ele é chamado de acordo com a requisicao.
 
 
 
