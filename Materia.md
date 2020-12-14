@@ -3410,6 +3410,104 @@ Head 	| igual ao get mas nunca retorna um corpo| sim	      |	sim		| usado em tes
 Options | solicita uma lista de metodos suportados| sim		  | sim		|
 
 
+### 4.18. Conhecendo os códigos de status HTTP
+
+é importante que criemos apis faceis de serem consumidas. para isso o uso correto dos codigos dos status do http.
+
+uma resposta obrigatoriamente possui um status http.
+
+lista padronizada de codigo de status http:
+https://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
+https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status
+
+os codigos de status sao agrupados em niveis.
+
+alguns exemplos mais usados:
+
+#### nivel 200
+indica que a requisicao foi bem sucedida
+* 200 - ok
+* 201 - criado - usado quando solicitamos a criacao de um novo recurso
+* 204 - sem conteudo - usado em delete
+
+#### nivel 300
+indica status de redirecionamento. 
+
+* 301 - movido permanentemente - indica que o recurso foi movido. no cabecalho da resposta vem uma propriedade chamada de "location" com a nova localizacao
+* 302 - encontrado mas alterado temporariamente - no cabecalho da resposta vem uma propriedade chamada de "location" com a localizacao temporaria mas nao deve ser alterado o codigo pois a alteracao é temporaria
+
+#### nivel 400
+indica erro no cliente.
+* 400 - requisicao mal feita - bad request
+* 401 - nao autorizado
+* 403 - proibido
+* 404 - nao encontrado
+* 405 - verbo nao suportado pelo recurso
+* 406 - nao aceite (por causa do media type do Accept)
+
+#### nivel 500
+indica erro no servidor.
+
+* 500 - erro interno inesperado - comum em erros no tratameneto de exceptions
+* 503 - serviço indisponivel - servidor esta em manutencao ou sobrecarregado
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
