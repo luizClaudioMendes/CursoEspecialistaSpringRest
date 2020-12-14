@@ -3016,7 +3016,55 @@ ai basta acrescentar:
 
 ai nas requisicoes podemos utilizar api.algafood.local em vez de usar localhost
 
+### 4.11. Desafio: collection resource de estados
 
+### 4.12. Representações de recursos e content negotiation
+um recurso é qualquer coisa exposta na internet como por exemplo um catalogo de produtos ou um produto.
+para ser alcançado, é necessario utilizar uma URL, que contenha a URI.
+
+o que uma requisicao feita em uma URL deve retorar?
+
+ai entra em pratica uma coisa muito importante chamada representaçoes de recurso.
+
+uma representacao de recursos é um codigo que descreve o estado atual do recurso.
+
+ex:
+[
+    {
+        "id": 1,
+        "nome": "Brasileira"
+    },
+    {
+        "id": 2,
+        "nome": "Americana"
+    }
+]
+
+o recurso identificado por /cozinhas é uma coleçao. e por isso a representacao dessas cozinhas é uma listagem de cozinhas encontradas em um formato especifico, neste caso o JSON.
+
+a representacao do recurso nao é o proprio recurso.
+
+o recurso é o objeto.
+
+a representacao é a transformaçao desse objeto em um codigo que seja possivel visualizar ou ler.
+
+podemos ter varios tipos de representacoes para um recurso.
+
+ou seja, um mesmo recurso pode ser visualizado de diferentes formas.
+
+quando um cliente faz uma requisicao, ele pode especificar em qual formato ele espera receber a resposta.
+
+essa especificacao é adicionada no cabeçalho da requisicao, com o nome Accept.
+o valor desse cabecalho é um media type, exemplo application/json.
+
+lista com varios media types:
+https://www.iana.org/assignments/media-types/media-types.xhtml
+
+quando passamos essa propriedade no cabeçalho estamos dizendo ao servidor que so aceitamos esse tipo como resposta. cabe ao servidor aceitar ou nao.
+
+outro formato muito conhecido é o xml.
+
+essa negociacao de formato de representacao de um mesmo recurso é o que chamamos de content negotiation, porque o cliente esta de certa forma negociando com o servidor o formato da resposta.
 
 
 
