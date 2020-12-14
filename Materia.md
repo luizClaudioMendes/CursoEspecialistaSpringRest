@@ -3451,6 +3451,19 @@ indica erro no servidor.
 * 500 - erro interno inesperado - comum em erros no tratameneto de exceptions
 * 503 - serviço indisponivel - servidor esta em manutencao ou sobrecarregado
 
+### 4.19. Definindo o status da resposta HTTP com @ResponseStatus
+como podemos alterar um status da resposta em uma endpoint?
+
+basta usar o @ResponseStatus
+
+vamos aqui criar um exemplo:
+@ResponseStatus(HttpStatus.CREATED)
+@GetMapping("/{cozinhaId}") //o cozinhaId será concatenado a URI /cozinhas. tem o nome de path variable e pode ter qualquer nome
+public Cozinha buscar(@PathVariable("cozinhaId") Long id) {
+	return cozinhaRepository.buscar(id);
+}
+
+agora quando executamos a requisicao é retornado o codigo 201 created
 
 
 
