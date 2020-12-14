@@ -38,8 +38,15 @@ public class CozinhaController {
 	
 //	@ResponseStatus(HttpStatus.CREATED) // teste de alteracao de status da resposta 
 	@GetMapping("/{cozinhaId}") //o cozinhaId será concatenado a URI /cozinhas. tem o nome de path variable e pode ter qualquer nome
-	public Cozinha buscar(@PathVariable("cozinhaId") Long id) {
-		return cozinhaRepository.buscar(id);
+	public ResponseEntity<Cozinha> buscar(@PathVariable("cozinhaId") Long id) {
+		Cozinha cozinha = cozinhaRepository.buscar(id);
+		
+		if(cozinha != null) {
+			return ResponseEntity.ok(cozinha);
+		}
+		
+//		return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); //forma mais verbosa
+		return ResponseEntity.notFound().build(); //forma mais curta
 	}
 	
 //	//codigo para exibicao do controle fino da resposta --- ver aula 4.20. Manipulando a resposta HTTP com ResponseEntity

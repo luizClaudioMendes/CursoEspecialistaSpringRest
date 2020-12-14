@@ -3523,11 +3523,49 @@ desta forma é retornado um 302 sem corpo e no header é colocado um location pa
 o intuito desta aula é somente exibir a possibilidade. o codigo nao deve permanecer assim.
 
 
+### 4.21. Corrigindo o Status HTTP para resource inexistente
+agora vamos aplicar o aprendido.
+
+vamos fazer o tratamento para quando um resource nao existe.
+
+vamos usar como exemplo o metodo:
+
+@GetMapping("/{cozinhaId}") 
+public Cozinha buscar(@PathVariable("cozinhaId") Long id) {
+	return cozinhaRepository.buscar(id);
+}
+
+o que fazer quando o cliente passa um id que nao existe?
+
+vamos considerar que a URI é o conjunto todo ou seja:
+/cozinhas/1 é uma URI e,
+/cozinhas/200 é uma URI.
+
+uma URI quando obtem resultado no banco, é considerada valida e retorna 200.
+uma URI quando nao obtem resultado no banco, é considerada invalida e retorna 404.
+
+entao beleza, vamos continuar.
+
+precisamos fazer as alteracoes da aula anterior, ou seja, a resposta nao sera mais uma cozinha e sim um ResponseEntity.
+
+depois aplicamos a logica. caso seja encontrado um resultado retorna 200. caso nao seja retorna 404.
+
+@GetMapping("/{cozinhaId}") 
+public ResponseEntity<Cozinha> buscar(@PathVariable("cozinhaId") Long id) {
+	Cozinha cozinha = cozinhaRepository.buscar(id);
+	
+	if(cozinha != null) {
+		return ResponseEntity.ok(cozinha);
+	}
+	
+//		return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); //forma mais verbosa
+	return ResponseEntity.notFound().build(); //forma mais curta
+}
 
 
+pronto.
 
-
-
+agora quando for passado um id inexistente, será retornado 404.
 
 
 
