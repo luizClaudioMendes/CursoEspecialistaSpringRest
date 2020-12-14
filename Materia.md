@@ -2959,9 +2959,62 @@ entao o certo seria assim:
 URI: /produtos/{codigo}
 URL: https://api.algamarket.com.br/produtos/331
 
+### 4.10. Modelando e requisitando um Collection Resource com GET
 
+para começar a criacao das nossas rest api´s devemos criar uma controller,
+neste exemplo vai ser uma controller de cozinhas:
 
+//@Controller //informando ao spring que esta classe é um componente do tipo controller
+//@ResponseBody //indica que a resposta dos metodos do controller devem ir para a resposta http
+@RestController // esta anotacao substitui as @Controller e a @ResponseBody, pois ela ja as contem
+@RequestMapping("/cozinhas")//mapeamento da URI, no plural como diz na conveçao
+public class CozinhaController {
+	
+	@Autowired
+	private CozinhaRepository cozinhaRepository;
+	
+	@GetMapping //requisicoes com o verbo http GET chegarao neste metodo
+	public List<Cozinha> listar() {
+		return cozinhaRepository.listar();
+	}
 
+}
+
+agora podemos testar no postman a requisicao:
+
+usando o verbo GET, na URL: localhost:8080/cozinhas
+
+vem como resposta, um JSON:
+
+[
+    {
+        "id": 1,
+        "nome": "Brasileira"
+    },
+    {
+        "id": 2,
+        "nome": "Americana"
+    }
+]
+
+#### JSON
+JSON é uma anotacao de transferencia de dados bem leve.
+JSON signigifa JavaScript Object Notation
+
+* as {} representam um objeto
+* dentro do objeto temos propriedades, que sao represenadas por chave/valor ex:"nome": "Brasileira"
+* os [] significa que temos uma lista de objetos
+
+#### alterar o host local para utilizar uma URL diferente de localhost ou 127.0.0.1
+para fazer isso é necessario alterar o arquivo host no sistema operacional
+
+no windows fica em:
+C:\Windows\System32\drivers\etc\hosts
+
+ai basta acrescentar:
+127.0.0.1	api.algafood.local
+
+ai nas requisicoes podemos utilizar api.algafood.local em vez de usar localhost
 
 
 
