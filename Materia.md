@@ -2913,9 +2913,51 @@ um unico produto é um recurso, um singleton resource.
 
 uma coleçao de produtos é um recurso, uma collection resource, que pode ter de zero a infinitos itens.
 
+### 4.9. Identificando recursos REST
+
+REst usa URI, que significa Uniform Resource Identifier.
+é um conjunto de caracteres que tem como objetivo de dar uma especie de endereço para os recursos de forma nao ambigua.
+
+#### URI vs URL
+a URL é um tipo de URI, que significa uniform Resource Locator. ela tambem é um tipo de URI com a vantangem de tambem possuir a localizacao do recurso.
+
+ex:
+URI: /listarProdutos
+URL: https://api.algamarket.com.br/listarProdutos
+
+#### boas praticas
+imagine um recurso, uma coleçao de produtos.
+
+se a identificarmos assim:
+URI: /listarProdutos
+URL: https://api.algamarket.com.br/listarProdutos
+
+esta incorreto.
+
+a URI deve se referenciar a um substantivo e nao a um verbo ou a uma acao.
+
+porque coisas possuem propriedades, verbos nao.
 
 
+entao o certo seria assim:
+URI: /produtos
+URL: https://api.algamarket.com.br/produtos
 
+desta forma os consumidores da api usam a mesma interface para manipular o recurso, que deixa a api muito mais intuitiva.
+
+mas como fazer para incluir, excluir ou atualizar um produto?
+
+agente faz isso variando os verbos http.
+
+a constraint de interface uniforme é alcancanda com a combinacao do URI e verbos http, por isso é importante usar eles de acordo com as conveções.
+
+o ideal e a convençao diz que devemos sempre usar os nomes no plural.
+
+entao se queremos buscar um produto por id, mesmo que seja somente um produto, devemos usar o plural de forma a manter a consistencia da api.
+
+entao o certo seria assim:
+URI: /produtos/{codigo}
+URL: https://api.algamarket.com.br/produtos/331
 
 
 
