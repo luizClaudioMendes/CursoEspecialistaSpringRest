@@ -3388,11 +3388,26 @@ estas coisas somente sao necessarias se pretendermos dar suporte a XML e tambem 
 
 nada disso é necessario para JSON.
 
+### 4.17. Conhecendo os métodos HTTP
 
+atraves do metodo informamos ao servidor qual tipo de acao queremos fazer atraves da URI.
 
+#### idempotência
+algo idempotente significa que tem a capacidade de poder ser aplicado mais de uma vez sem que o resultado da primeira aplicacao se altere.
 
+#### segurança de um metodo http
+a segurança de um metodo é que nao modifica recursos
 
+#### principais metodos http
 
+NOME 	| para que serve 						| idempotente |	seguro	|  observacoes
+Get 	| obtem a representacao de um recurso 	| sim		  | sim 	| nao deve ser usado para alterar recursos
+Post 	| cria um novo recurso em uma coleçao	| não 		  | Não 	| se enviado varias vezes serao criados novos recursos identicos (exceto id)
+Put 	| atualiza recurso 						| sim		  |	Não		| envia no corpo da requisicao os dados a serem atualizados mas ele deve atualizar o dado completo nao somente os dados enviados (nao pode ser usado para atualizacao parcial)
+Patch 	| atualizar um recurso parcialmente 	| sim		  |	não		| usado para uma atualizacao parcial
+Delete 	| remocao de um determinado recurso 	| sim (???)	  |	nao		| nao passamos nem recebemos um payload
+Head 	| igual ao get mas nunca retorna um corpo| sim	      |	sim		| usado em testes
+Options | solicita uma lista de metodos suportados| sim		  | sim		|
 
 
 
