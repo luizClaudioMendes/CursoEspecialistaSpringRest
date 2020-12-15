@@ -3721,9 +3721,42 @@ caso exista constraint violations, o try captura e retorna erro 409 conflict
 o verbo DELETE é Idempotente, pois nao existe efeito colateral de varias requisicoes repetidas identicas nao gera um efeito colateral no sistema, mesmo que outros status seja retornados.
 
 
+### 4.27. Implementando a camada de domain services (e a importância da linguagem ubíqua)
+
+no DDD existe um conceito chamado domain service ou serviço de dominio. 
+
+um domain service é uma operacao sem estado que realiza uma tarefa especifica do dominio, ou seja, uma tarefa de negocio.
+
+quando um processo no dominio nao é uma responsabilidade natural de uma entidade agente cria um serviço de dominio.
+
+nao é legal que o controller tenha acesso direto ao repositorio em tarefas que realizam alteracoes no banco de dados. é aceitavel que o controller tenha acesso direto ao repository para consultas mas nao alteraçoes.
+
+entao vamos criar a classe onde vamos colocar as regras de negocio:
+
+OBS: sempre devemos tentar utilizar as palavras usadas pelas pessoas de negocio.
+o DDD menciona isso, como linguagem ubiqua, ou seja, linguagem comum, a mesma falada pelas pessoas de negocio.
+devemos trazer isso para o nosso sistema.
+os nomes dos metodos tambem devem refletir o palavreado das pessoas de negocio.
 
 
+@Service //esta anotacao é um component mas ela tem uma semantica diferente que indica que é um servico originado do DDD
+public class CadastroCozinhasService {
+	
+	@Autowired
+	private CozinhaRepository cozinhaRepository;
+	
+	public Cozinha salvar(Cozinha cozinha) {
+		return cozinhaRepository.salvar(cozinha);
+	}
+}
 
+
+e as alteracoes no controller, no metodo salvar deve chamar agora a service e nao o repository.
+@PostMapping
+@ResponseStatus(HttpStatus.CREATED)
+public Cozinha adicionar (@RequestBody Cozinha cozinha) {
+	return cadastroCozinha.salvar(cozinha);
+}
 
 
 
