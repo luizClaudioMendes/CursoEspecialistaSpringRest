@@ -3646,12 +3646,41 @@ para isso basta alterar o Content-Type para application/xml e tambem o Accept pa
 
 nao precisa fazer nenhuma alteraçao no codigo, pois ja configuramos a negociacao do media type xml.
 
+### 4.25. Modelando e implementando a atualização de recursos com PUT
+vamos entao modelar a atualizacao com PUT
+
+PUT /cozinhas/{id} HTTP/1.1
+Content-Type: application/json
+{
+	"nome": "Jupteriana"
+}
+
+ok. entao vamos implementar.
+
+@PutMapping("/{cozinhaId}")
+public ResponseEntity<Cozinha> atualizar(@PathVariable Long cozinhaId, @RequestBody Cozinha cozinha) {
+	Cozinha cozinhaAtual = cozinhaRepository.buscar(cozinhaId);
+	
+	if(cozinhaAtual != null) {
+//		cozinhaAtual.setNome(cozinha.getNome()); //copia dos atributos manual
+		BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");//copia programatica -- ignora o campo 'id' para nao copiar null
+		
+		cozinhaAtual = cozinhaRepository.salvar(cozinhaAtual);
+		
+		return ResponseEntity.ok(cozinhaAtual);
+	}
+	
+	return ResponseEntity.notFound().build();
+}	
 
 
+entao, ao receber o id, ele ira buscar a cozinha que existe no BD e serao copiados todos as propriedades da cozinha recebida no payload da requisicao exceto o id, porque no payload o id vem nulo.
 
+após a copia das propriedades é persistida a alteracao.
 
+o PUT é usado para alteracoes completas em objetos, por isso a copia integral das propriedades recebidas no payload.
 
-
+o PUT tambem é idempotente, pois mesmo que voce execute varias vezes o mesmo comando para atualizar o objeto atualizado nao sofre com efeitos colaterais. ele permanecera o mesmo que foi enviado na primeira requisicao.
 
 
 
