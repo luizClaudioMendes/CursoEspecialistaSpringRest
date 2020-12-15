@@ -74,6 +74,45 @@
 			"response": []
 		},
 		{
+			"name": "Cozinhas - Remover",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/xml",
+						"disabled": true
+					},
+					{
+						"key": "Accept",
+						"type": "text",
+						"value": "application/json",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "localhost:8080/cozinhas/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cozinhas",
+						"1"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Cozinhas - atualizar",
 			"request": {
 				"method": "PUT",

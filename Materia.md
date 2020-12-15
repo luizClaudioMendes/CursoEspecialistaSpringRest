@@ -3683,10 +3683,42 @@ o PUT é usado para alteracoes completas em objetos, por isso a copia integral d
 o PUT tambem é idempotente, pois mesmo que voce execute varias vezes o mesmo comando para atualizar o objeto atualizado nao sofre com efeitos colaterais. ele permanecera o mesmo que foi enviado na primeira requisicao.
 
 
+### 4.26. Modelando e implementando a exclusão de recursos com DELETE
+agora vamos modelar a exclusao de um recurso.
+
+DELETE /cozinhas/{id} HTTP/1.1
+Content-Type: application/json
+
+agora vamos implementar:
+@DeleteMapping("/{cozinhaId}")
+public ResponseEntity<Cozinha> remover (@PathVariable Long cozinhaId) {
+	try {
+
+		Cozinha cozinha = cozinhaRepository.buscar(cozinhaId);
+	
+		if(cozinha != null) {
+			cozinhaRepository.remover(cozinha);
+			
+			return ResponseEntity.noContent().build();
+		}
+		
+		return ResponseEntity.notFound().build();
+		
+	}catch (DataIntegrityViolationException e) {
+		//o status 400 bad request tambem seria correto, mas ele é mais abrangente
+		//o status 409 conflict é mais apropriado
+		return ResponseEntity.status(HttpStatus.CONFLICT).build();
+		//ao usar o status 409 é bom retornar um corpo descrevendo qual foi o problema que gerou o conflito.
+	}
+}
 
 
+buscamos cozina com o id passado em parametro.
+caso encontre, remove e retorna o status de no content.
+caso nao encontre, retorna status 404
+caso exista constraint violations, o try captura e retorna erro 409 conflict
 
-
+o verbo DELETE é Idempotente, pois nao existe efeito colateral de varias requisicoes repetidas identicas nao gera um efeito colateral no sistema, mesmo que outros status seja retornados.
 
 
 
