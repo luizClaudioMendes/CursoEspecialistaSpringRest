@@ -3636,7 +3636,15 @@ public Cozinha adicionar (@RequestBody Cozinha cozinha) {
 
 pronto. agora esta tudo ok.
 
+### 4.24. Negociando o media type do payload do POST com Content-Type
 
+o nosso sistema esta configurado para JSON e XML.
+
+entao na inclusao tambem podemos passar um xml.
+
+para isso basta alterar o Content-Type para application/xml e tambem o Accept para application/xml
+
+nao precisa fazer nenhuma alteraçao no codigo, pois ja configuramos a negociacao do media type xml.
 
 
 
